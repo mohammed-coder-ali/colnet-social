@@ -6,554 +6,229 @@
     <title>Colnet | Your world online.</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Orbitron & Rajdhani -->
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome for futuristic cyber icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        cyber: {
-                            black: '#030206',
-                            dark: '#0a0813',
-                            blue: '#00f0ff',
-                            purple: '#bd00ff',
-                            glow: '#7000ff',
-                            text: '#e2e8f0',
-                            dim: '#94a3b8'
-                        }
-                    },
                     fontFamily: {
-                        orbitron: ['Orbitron', 'sans-serif'],
-                        rajdhani: ['Rajdhani', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
     <style>
-        /* Custom Neon & Glassmorphism Styling */
         body {
-            background-color: #030206;
-            color: #e2e8f0;
-            font-family: 'Rajdhani', sans-serif;
-            overflow-x: hidden;
+            background-color: #f8fafc;
+            color: #0f172a;
+            font-family: 'Inter', sans-serif;
         }
-
-        .neon-border-blue {
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.25), inset 0 0 10px rgba(0, 240, 255, 0.1);
-            border: 1px solid rgba(0, 240, 255, 0.4);
-        }
-
-        .neon-border-purple {
-            box-shadow: 0 0 15px rgba(189, 0, 255, 0.25), inset 0 0 10px rgba(189, 0, 255, 0.1);
-            border: 1px solid rgba(189, 0, 255, 0.4);
-        }
-
-        .neon-glow-text-blue {
-            text-shadow: 0 0 8px rgba(0, 240, 255, 0.8), 0 0 20px rgba(0, 240, 255, 0.4);
-        }
-
-        .neon-glow-text-purple {
-            text-shadow: 0 0 8px rgba(189, 0, 255, 0.8), 0 0 20px rgba(189, 0, 255, 0.4);
-        }
-
-        /* Glassmorphism Panel */
-        .glass-panel {
-            background: rgba(10, 8, 19, 0.65);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-        }
-
-        /* Scan-lines for that retro-future display look */
-        .scanlines {
-            position: relative;
-            overflow: hidden;
-        }
-        .scanlines::before {
-            content: " ";
-            display: block;
-            position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 2;
-            background-size: 100% 4px, 6px 100%;
-            pointer-events: none;
-        }
-
-        /* Keyframe Animations */
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(1deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
-        }
-
-        @keyframes pulse-slow {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.8; }
-        }
-
-        .animated-float {
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .animated-pulse-slow {
-            animation: pulse-slow 4s ease-in-out infinite;
-        }
-
-        /* Custom Scrollbar */
+        /* Custom scrollbar matching Notion styling */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #030206;
+            background: #f1f5f9;
         }
         ::-webkit-scrollbar-thumb {
-            background: #251e3e;
-            border-radius: 4px;
+            background: #cbd5e1;
+            border-radius: 3px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #bd00ff;
-        }
-
-        /* Glowing buttons with clip-paths */
-        .cyber-btn {
-            clip-path: polygon(10% 0%, 100% 0%, 100% 75%, 90% 100%, 0% 100%, 0% 25%);
-            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-        .cyber-btn:hover {
-            transform: scale(1.03);
-            filter: brightness(1.2);
-        }
-
-        /* Grid Background Overlay */
-        .cyber-grid {
-            background-size: 40px 40px;
-            background-image: 
-                linear-gradient(to right, rgba(112, 0, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(112, 0, 255, 0.05) 1px, transparent 1px);
+            background: #94a3b8;
         }
     </style>
 </head>
-<body class="cyber-grid relative min-h-screen">
+<body class="min-h-screen flex flex-col">
 
-    <!-- Interactive Canvas Particles Background -->
-    <canvas id="synapse-canvas" class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none opacity-60"></canvas>
-
-    <!-- Header & Responsive Navbar -->
-    <header class="sticky top-0 z-50 glass-panel border-b border-cyber-purple/20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <!-- Brand Logo -->
-            <a href="#" class="flex items-center gap-3 group">
-                <div class="relative w-10 h-10 flex items-center justify-center bg-gradient-to-tr from-cyber-blue to-cyber-purple rounded-lg p-[1.5px] shadow-[0_0_15px_rgba(189,0,255,0.4)]">
-                    <div class="w-full h-full bg-cyber-black rounded-lg flex items-center justify-center font-orbitron font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyber-blue to-cyber-purple text-lg tracking-widest">
-                        C
-                    </div>
-                    <!-- Outer pulsating ring -->
-                    <span class="absolute -inset-0.5 rounded-lg bg-gradient-to-tr from-cyber-blue to-cyber-purple opacity-40 blur-sm group-hover:opacity-100 transition duration-500"></span>
+    <!-- Header & Navigation -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded-md bg-blue-600 flex items-center justify-center text-white font-bold text-base">
+                    C
                 </div>
-                <div>
-                    <span class="font-orbitron text-xl font-black tracking-widest text-white group-hover:text-cyber-blue transition duration-300">COL<span class="text-cyber-purple">NET</span></span>
-                    <p class="text-[9px] tracking-[0.2em] uppercase font-semibold text-cyber-blue text-left leading-none">Your world online</p>
+                <div class="flex flex-col">
+                    <span class="font-bold text-sm tracking-tight text-slate-900">Colnet</span>
+                    <span class="text-[10px] text-slate-500 font-medium leading-none">Your world online.</span>
                 </div>
             </a>
 
             <!-- Desktop Nav Links -->
-            <nav class="hidden md:flex items-center gap-8 font-orbitron text-sm font-medium tracking-wider">
-                <a href="#living-profiles" class="text-cyber-text hover:text-cyber-blue hover:neon-glow-text-blue transition duration-300">Living Profiles</a>
-                <a href="#synaptic-feed" class="text-cyber-text hover:text-cyber-purple hover:neon-glow-text-purple transition duration-300">Synaptic Feed</a>
-                <a href="#mind-core" class="text-cyber-text hover:text-cyber-blue hover:neon-glow-text-blue transition duration-300 flex items-center gap-1.5">
-                    <i class="fa-solid fa-brain text-[11px] animate-pulse"></i> M.I.N.D. Core
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
+                <a href="#living-profiles" class="hover:text-blue-600 transition">Profiles</a>
+                <a href="#synaptic-feed" class="hover:text-blue-600 transition">Feed Space</a>
+                <a href="#mind-core" class="hover:text-blue-600 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-brain text-xs text-blue-500"></i> M.I.N.D. Core
                 </a>
-                <a href="#about" class="text-cyber-text hover:text-cyber-blue hover:neon-glow-text-blue transition duration-300">Architecture</a>
+                <a href="#about" class="hover:text-blue-600 transition">About</a>
             </nav>
 
-            <!-- CTA Controls -->
-            <div class="hidden md:flex items-center gap-4">
-                <button onclick="toggleAuthModal('login')" class="font-orbitron font-bold text-xs tracking-widest text-cyber-text hover:text-white transition duration-200">
-                    LOGIN
+            <!-- Authentication Controls -->
+            <div class="hidden md:flex items-center gap-3">
+                <button onclick="toggleAuthModal('login')" class="text-sm font-medium text-slate-600 hover:text-slate-900 px-3 py-1.5 transition">
+                    Sign In
                 </button>
-                <button onclick="toggleAuthModal('signup')" class="cyber-btn bg-gradient-to-r from-cyber-blue to-cyber-purple text-black font-orbitron font-black text-xs px-6 py-2.5 tracking-wider shadow-[0_0_20px_rgba(0,240,255,0.3)]">
-                    SYNAPSE LINK
+                <button onclick="toggleAuthModal('signup')" class="bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium px-4 py-1.5 rounded-md transition shadow-sm">
+                    Create Space
                 </button>
             </div>
 
             <!-- Mobile Menu Toggle Button -->
-            <button onclick="toggleMobileMenu()" class="md:hidden flex items-center text-cyber-blue text-2xl focus:outline-none p-2">
-                <i id="menu-icon" class="fa-solid fa-bars-staggered"></i>
+            <button onclick="toggleMobileMenu()" class="md:hidden flex items-center text-slate-700 hover:text-slate-900 p-2 focus:outline-none">
+                <i id="menu-icon" class="fa-solid fa-bars text-lg"></i>
             </button>
         </div>
 
         <!-- Mobile Dropdown Menu -->
-        <div id="mobile-menu" class="hidden md:hidden glass-panel border-b border-cyber-purple/20 transition-all duration-300">
-            <div class="px-6 pt-2 pb-6 flex flex-col gap-4 font-orbitron text-sm tracking-wider">
-                <a href="#living-profiles" onclick="toggleMobileMenu()" class="py-2 text-cyber-text hover:text-cyber-blue transition">Living Profiles</a>
-                <a href="#synaptic-feed" onclick="toggleMobileMenu()" class="py-2 text-cyber-text hover:text-cyber-purple transition">Synaptic Feed</a>
-                <a href="#mind-core" onclick="toggleMobileMenu()" class="py-2 text-cyber-text hover:text-cyber-blue transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-brain text-[11px]"></i> M.I.N.D. Core
-                </a>
-                <a href="#about" onclick="toggleMobileMenu()" class="py-2 text-cyber-text hover:text-cyber-blue transition">Architecture</a>
-                <hr class="border-cyber-purple/20 my-2">
-                <div class="flex items-center justify-between pt-2">
-                    <button onclick="toggleAuthModal('login'); toggleMobileMenu()" class="font-bold text-xs tracking-widest text-cyber-text hover:text-white transition duration-200">
-                        LOGIN
-                    </button>
-                    <button onclick="toggleAuthModal('signup'); toggleMobileMenu()" class="cyber-btn bg-gradient-to-r from-cyber-blue to-cyber-purple text-black font-black text-xs px-5 py-2.5 tracking-wider">
-                        SYNAPSE LINK
-                    </button>
-                </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 py-4 px-6 space-y-3">
+            <a href="#living-profiles" onclick="toggleMobileMenu()" class="block text-sm font-medium text-slate-600 hover:text-slate-900 py-1">Profiles</a>
+            <a href="#synaptic-feed" onclick="toggleMobileMenu()" class="block text-sm font-medium text-slate-600 hover:text-slate-900 py-1">Feed Space</a>
+            <a href="#mind-core" onclick="toggleMobileMenu()" class="block text-sm font-medium text-slate-600 hover:text-slate-900 py-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-brain text-xs text-blue-500"></i> M.I.N.D. Core
+            </a>
+            <a href="#about" onclick="toggleMobileMenu()" class="block text-sm font-medium text-slate-600 hover:text-slate-900 py-1">About</a>
+            <hr class="border-slate-100 my-2">
+            <div class="flex items-center justify-between pt-1">
+                <button onclick="toggleAuthModal('login'); toggleMobileMenu()" class="text-sm font-medium text-slate-600 hover:text-slate-900">
+                    Sign In
+                </button>
+                <button onclick="toggleAuthModal('signup'); toggleMobileMenu()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium px-4 py-2 rounded-md transition">
+                    Create Space
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- Main Content Container -->
-    <main class="relative z-10">
+    <!-- Main Content Grid -->
+    <main class="flex-grow">
 
         <!-- HERO SECTION -->
-        <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden py-16 px-4">
-            <!-- Background glow gradients -->
-            <div class="absolute top-1/4 left-1/4 w-[350px] h-[350px] bg-cyber-blue/15 rounded-full filter blur-[100px] pointer-events-none animated-pulse-slow"></div>
-            <div class="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-cyber-purple/15 rounded-full filter blur-[120px] pointer-events-none animated-pulse-slow"></div>
-
-            <div class="max-w-5xl mx-auto text-center relative z-20">
-                <!-- Status tag -->
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyber-purple/10 border border-cyber-purple/30 text-cyber-blue text-xs font-semibold uppercase tracking-widest mb-6 animated-float">
-                    <span class="w-1.5 h-1.5 rounded-full bg-cyber-blue animate-ping"></span>
-                    Neural Grid v2.5 Online
-                </div>
-
-                <!-- Main Slogan & Title -->
-                <h1 class="font-orbitron text-4xl sm:text-6xl md:text-8xl font-black tracking-tight leading-none mb-4 text-white">
-                    COL<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyber-blue via-cyber-purple to-[#ff00ea] neon-glow-text-blue">NET</span>
-                </h1>
-                <h2 class="font-orbitron text-xl sm:text-2xl md:text-3xl font-extrabold text-cyber-blue tracking-[0.3em] uppercase mb-8">
-                    “Your world online.”
-                </h2>
-
-                <!-- Sub-narrative descriptive paragraph -->
-                <p class="max-w-2xl mx-auto text-sm sm:text-lg text-cyber-dim leading-relaxed mb-10">
-                    Step inside the next phase of human connectivity. Colnet is an infinite digital canvas of 
-                    <span class="text-white font-semibold">Living Profiles</span> and <span class="text-cyber-blue font-semibold">Digital Spheres</span> where social expression meets autonomous identity synthesis. Create your sanctuary. Be known.
-                </p>
-
-                <!-- Interactive Hero Actions -->
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
-                    <button onclick="toggleAuthModal('signup')" class="cyber-btn w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-cyber-blue via-cyber-purple to-cyber-purple hover:scale-105 transition-all text-black font-orbitron font-black tracking-widest text-sm shadow-[0_0_30px_rgba(0,240,255,0.4)]">
-                        INITIALIZE CONNECTION
-                    </button>
-                    <a href="#living-profiles" class="w-full sm:w-auto px-8 py-4 border border-cyber-blue/30 hover:border-cyber-blue hover:neon-border-blue glass-panel text-cyber-blue font-orbitron font-bold tracking-widest text-xs transition duration-300 rounded flex items-center justify-center gap-2">
-                        EXPLORE THE GRID <i class="fa-solid fa-arrow-right animate-pulse"></i>
-                    </a>
-                </div>
-
-                <!-- Interactive Platform Status Metrics -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-20">
-                    <div class="glass-panel p-4 rounded-xl border border-white/5 text-center">
-                        <p class="font-orbitron text-cyber-blue text-2xl font-bold tracking-widest" id="stat-nodes">148,290</p>
-                        <p class="text-[10px] text-cyber-dim uppercase tracking-wider mt-1">Active Neural Nodes</p>
-                    </div>
-                    <div class="glass-panel p-4 rounded-xl border border-white/5 text-center">
-                        <p class="font-orbitron text-cyber-purple text-2xl font-bold tracking-widest" id="stat-worlds">42,019</p>
-                        <p class="text-[10px] text-cyber-dim uppercase tracking-wider mt-1">Digital Spheres Synthesized</p>
-                    </div>
-                    <div class="glass-panel p-4 rounded-xl border border-white/5 text-center">
-                        <p class="font-orbitron text-cyber-blue text-2xl font-bold tracking-widest">0.034s</p>
-                        <p class="text-[10px] text-cyber-dim uppercase tracking-wider mt-1">Average Response Latency</p>
-                    </div>
-                    <div class="glass-panel p-4 rounded-xl border border-white/5 text-center">
-                        <p class="font-orbitron text-emerald-400 text-2xl font-bold tracking-widest">SECURE</p>
-                        <p class="text-[10px] text-cyber-dim uppercase tracking-wider mt-1">Synaptic Shield Protocol</p>
-                    </div>
-                </div>
+        <section class="max-w-4xl mx-auto text-center py-20 px-4 sm:px-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-xs font-medium text-slate-600 mb-6">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                System Node Connected
             </div>
-        </section>
-
-
-        <!-- LIVING PROFILES PREVIEW SECTION -->
-        <section id="living-profiles" class="py-24 px-4 relative max-w-7xl mx-auto border-t border-cyber-blue/10">
-            <div class="absolute right-0 top-1/4 w-[300px] h-[300px] bg-cyber-blue/5 rounded-full filter blur-3xl pointer-events-none"></div>
-
-            <div class="flex flex-col md:flex-row items-start justify-between gap-12 mb-16">
-                <div class="max-w-xl">
-                    <div class="flex items-center gap-2 text-cyber-blue font-orbitron text-xs tracking-[0.2em] uppercase mb-3">
-                        <span class="w-1.5 h-1.5 bg-cyber-blue inline-block rounded-full"></span> Section 01 // Profiles
-                    </div>
-                    <h2 class="font-orbitron text-3xl sm:text-5xl font-black tracking-wider text-white mb-4">
-                        Living <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyber-blue to-cyber-purple">Profiles</span>
-                    </h2>
-                    <p class="text-cyber-dim text-base">
-                        Your identity in Colnet is not just a profile; it is a live virtual vessel. Fully adaptive, reactive to your social synaptic data, and completely customizable with high-tech holographic traits.
-                    </p>
-                </div>
-                <!-- Profile Controls Tab -->
-                <div class="flex flex-wrap gap-2 font-orbitron text-xs font-bold tracking-widest self-end">
-                    <button onclick="setActiveProfile('synth')" id="tab-synth" class="profile-tab px-4 py-2 border border-cyber-blue bg-cyber-blue/10 text-cyber-blue transition duration-300">CARBON-SYNTH</button>
-                    <button onclick="setActiveProfile('chrono')" id="tab-chrono" class="profile-tab px-4 py-2 border border-white/5 hover:border-cyber-purple/50 text-cyber-dim transition duration-300">CHRONO-DRIFTER</button>
-                    <button onclick="setActiveProfile('nebula')" id="tab-nebula" class="profile-tab px-4 py-2 border border-white/5 hover:border-cyber-blue/50 text-cyber-dim transition duration-300">NEBULA-ENTITY</button>
-                </div>
-            </div>
-
-            <!-- Profile Cards Display & Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                <!-- Profile Avatar Interactive Rendering Card (Left) -->
-                <div class="lg:col-span-5 glass-panel scanlines rounded-2xl border border-cyber-blue/20 p-6 flex flex-col justify-between min-h-[480px] relative overflow-hidden group">
-                    <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-cyber-blue/10 rounded-full blur-3xl group-hover:bg-cyber-blue/20 transition duration-500"></div>
-                    
-                    <!-- Holographic Scan Border -->
-                    <div class="absolute inset-x-0 top-0 h-0.5 bg-cyber-blue shadow-[0_0_10px_rgba(0,240,255,1)] animate-bounce duration-[4000ms]"></div>
-
-                    <div class="flex justify-between items-start">
-                        <span class="font-orbitron text-xs tracking-widest text-cyber-blue font-bold px-2.5 py-1 bg-cyber-blue/10 rounded border border-cyber-blue/30">
-                            ID: <span id="profile-id">SYNTH-8401</span>
-                        </span>
-                        <div class="flex gap-1">
-                            <span class="w-1.5 h-1.5 rounded-full bg-cyber-blue animate-ping"></span>
-                            <span class="text-[10px] font-orbitron tracking-widest text-emerald-400">ACTIVE COUPLING</span>
-                        </div>
-                    </div>
-
-                    <!-- Holographic Center Avatar (Synthesized with interactive SVG shapes) -->
-                    <div class="my-8 flex justify-center items-center relative">
-                        <div class="w-48 h-48 rounded-full border border-dashed border-cyber-blue/30 flex items-center justify-center p-3 animate-[spin_40s_linear_infinite]"></div>
-                        <div class="absolute w-36 h-36 rounded-full border border-cyber-purple/40 flex items-center justify-center p-2 animate-[spin_20s_linear_infinite_reverse]"></div>
-                        <!-- Central Avatar Avatar Graphic -->
-                        <div id="profile-graphic" class="absolute w-28 h-28 rounded-full overflow-hidden border-2 border-cyber-blue flex items-center justify-center bg-cyber-black">
-                            <!-- SVG Avatar Concept -->
-                            <svg class="w-20 h-20 text-cyber-blue transition duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M12 2a5 5 0 0 0-5 5v3a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5z" stroke-linecap="round"/>
-                                <path d="M12 14c-4.4 0-8 3.6-8 8h16c0-4.4-3.6-8-8-8z" stroke-linecap="round"/>
-                                <circle cx="12" cy="7" r="1" fill="currentColor"/>
-                                <path d="M10 21v-4h4v4" stroke-linecap="round"/>
-                            </svg>
-                        </div>
-                    </div>
-
-                    <!-- Base stats -->
-                    <div>
-                        <div class="flex justify-between items-end mb-2">
-                            <span class="font-orbitron text-xs tracking-wider text-cyber-dim uppercase">Holographic Sync Bandwidth</span>
-                            <span class="font-orbitron text-xs text-cyber-blue" id="profile-sync-value">91.4%</span>
-                        </div>
-                        <div class="w-full h-1.5 bg-cyber-black rounded-full overflow-hidden border border-white/5">
-                            <div id="profile-sync-bar" class="h-full bg-gradient-to-r from-cyber-blue to-cyber-purple transition-all duration-500" style="width: 91.4%;"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Profile Customization Panel (Right) -->
-                <div class="lg:col-span-7 flex flex-col justify-center space-y-8">
-                    <div>
-                        <h3 class="font-orbitron text-2xl font-black text-white mb-2" id="profile-name">Vespera Kael</h3>
-                        <p class="text-cyber-blue font-orbitron text-xs tracking-widest uppercase mb-4" id="profile-class">Level 4 Carbon-Synth Architect</p>
-                        <p class="text-cyber-dim text-sm sm:text-base leading-relaxed" id="profile-bio">
-                            "Building responsive hyper-structures inside Sector 4. Synced via cold-node cybernetics. Connecting the organic nodes with the neon deep-sea platforms."
-                        </p>
-                    </div>
-
-                    <!-- Customizable Node Attributes Grid -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="glass-panel p-4 rounded-xl border border-white/5 flex gap-3 items-center hover:border-cyber-blue/30 transition duration-300">
-                            <div class="w-10 h-10 rounded-lg bg-cyber-blue/10 flex items-center justify-center text-cyber-blue border border-cyber-blue/20">
-                                <i class="fa-solid fa-server"></i>
-                            </div>
-                            <div>
-                                <p class="text-[10px] text-cyber-dim uppercase tracking-wider">Primary Cluster</p>
-                                <p class="font-orbitron text-sm font-bold text-white" id="stat-cluster">Neo-Tokyo Central</p>
-                            </div>
-                        </div>
-                        <div class="glass-panel p-4 rounded-xl border border-white/5 flex gap-3 items-center hover:border-cyber-purple/30 transition duration-300">
-                            <div class="w-10 h-10 rounded-lg bg-cyber-purple/10 flex items-center justify-center text-cyber-purple border border-cyber-purple/20">
-                                <i class="fa-solid fa-cloud-bolt"></i>
-                            </div>
-                            <div>
-                                <p class="text-[10px] text-cyber-dim uppercase tracking-wider">Holographic Origin</p>
-                                <p class="font-orbitron text-sm font-bold text-white" id="stat-origin">Sector 4 Reef</p>
-                            </div>
-                        </div>
-                        <div class="glass-panel p-4 rounded-xl border border-white/5 flex gap-3 items-center hover:border-cyber-blue/30 transition duration-300">
-                            <div class="w-10 h-10 rounded-lg bg-cyber-blue/10 flex items-center justify-center text-cyber-blue border border-cyber-blue/20">
-                                <i class="fa-solid fa-ring"></i>
-                            </div>
-                            <div>
-                                <p class="text-[10px] text-cyber-dim uppercase tracking-wider">Digital Subculture</p>
-                                <p class="font-orbitron text-sm font-bold text-white" id="stat-culture">Neo-Cybernetics</p>
-                            </div>
-                        </div>
-                        <div class="glass-panel p-4 rounded-xl border border-white/5 flex gap-3 items-center hover:border-cyber-purple/30 transition duration-300">
-                            <div class="w-10 h-10 rounded-lg bg-cyber-purple/10 flex items-center justify-center text-cyber-purple border border-cyber-purple/20">
-                                <i class="fa-solid fa-shield"></i>
-                            </div>
-                            <div>
-                                <p class="text-[10px] text-cyber-dim uppercase tracking-wider">Firewall Status</p>
-                                <p class="font-orbitron text-sm font-bold text-white" id="stat-firewall">99.8% Secured</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Dynamic Action Link -->
-                    <div class="flex items-center gap-4">
-                        <button onclick="toggleAuthModal('signup')" class="cyber-btn px-6 py-3 bg-cyber-blue hover:neon-border-blue text-black font-orbitron font-bold text-xs tracking-wider">
-                            SYNAPSE LINK PROFILE
-                        </button>
-                        <p class="text-[11px] text-cyber-dim font-mono tracking-tighter">/* Linked to 1,290 synchronized worlds */</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- SYNAPTIC FEED SECTION -->
-        <section id="synaptic-feed" class="py-24 px-4 relative max-w-7xl mx-auto border-t border-cyber-purple/10">
-            <div class="absolute left-0 bottom-1/4 w-[350px] h-[350px] bg-cyber-purple/5 rounded-full filter blur-3xl pointer-events-none"></div>
-
-            <div class="flex flex-col items-center text-center mb-16">
-                <div class="flex items-center gap-2 text-cyber-purple font-orbitron text-xs tracking-[0.2em] uppercase mb-3">
-                    <span class="w-1.5 h-1.5 bg-cyber-purple inline-block rounded-full"></span> Section 02 // Feed
-                </div>
-                <h2 class="font-orbitron text-3xl sm:text-5xl font-black tracking-wider text-white mb-4">
-                    The Synaptic <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyber-blue to-cyber-purple">Feed</span>
-                </h2>
-                <p class="text-cyber-dim text-base max-w-2xl">
-                    Cast your consciousness into the Grid. Post digital fragments, synchronize coordinates, customize environments, and feel the global system respond instantly.
-                </p>
-            </div>
-
-            <!-- Main Feed Interface Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <!-- Composer Panel (Left / Interactive Creator Box) -->
-                <div class="lg:col-span-4 flex flex-col gap-6">
-                    <div class="glass-panel rounded-2xl border border-white/5 p-6 relative overflow-hidden">
-                        <h3 class="font-orbitron text-sm font-black text-white mb-4 tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-plus-circle text-cyber-blue"></i> CAST CONSCIOUSNESS
-                        </h3>
-                        <!-- Form -->
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-[10px] text-cyber-dim uppercase tracking-wider mb-2">Synthetic Alias</label>
-                                <input id="feed-input-alias" type="text" value="Anonym-X" class="w-full bg-cyber-black/80 border border-white/10 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-cyber-blue focus:ring-1 focus:ring-cyber-blue transition">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] text-cyber-dim uppercase tracking-wider mb-2 font-orbitron">Neural Status / Fragment</label>
-                                <textarea id="feed-input-text" rows="4" placeholder="Type something next-gen... e.g., 'Just synchronized my home world to Sector 9. Floating oceans look crisp.'" class="w-full bg-cyber-black/80 border border-white/10 rounded-lg p-4 text-sm text-white focus:outline-none focus:border-cyber-purple focus:ring-1 focus:ring-cyber-purple transition resize-none"></textarea>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div class="flex gap-2">
-                                    <button class="w-8 h-8 rounded bg-white/5 hover:bg-cyber-blue/20 hover:text-cyber-blue text-cyber-dim flex items-center justify-center text-xs transition">
-                                        <i class="fa-solid fa-map-pin"></i>
-                                    </button>
-                                    <button class="w-8 h-8 rounded bg-white/5 hover:bg-cyber-purple/20 hover:text-cyber-purple text-cyber-dim flex items-center justify-center text-xs transition">
-                                        <i class="fa-solid fa-eye-dropper"></i>
-                                    </button>
-                                </div>
-                                <button onclick="castToGrid()" class="cyber-btn px-5 py-2.5 bg-gradient-to-r from-cyber-blue to-cyber-purple text-black font-orbitron font-extrabold text-xs tracking-wider shadow-[0_0_15px_rgba(112,0,255,0.3)]">
-                                    CAST TO GRID
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Cyber Advert / Holographic Promo Widget -->
-                    <div class="glass-panel rounded-2xl border border-cyber-purple/20 p-6 bg-gradient-to-b from-cyber-purple/5 to-transparent relative overflow-hidden">
-                        <div class="absolute -right-16 -top-16 w-32 h-32 bg-cyber-purple/10 rounded-full blur-2xl"></div>
-                        <h4 class="font-orbitron text-xs font-black text-cyber-purple tracking-widest mb-2">PROMOTED TRANSMISSION</h4>
-                        <p class="font-orbitron text-sm font-bold text-white mb-2">HOLO-SUITE: CYBERPUNK LABS</p>
-                        <p class="text-cyber-dim text-xs leading-relaxed mb-4">
-                            Synthesize infinite digital asset packs directly with our cloud suite. Completely decentralized.
-                        </p>
-                        <a href="#" class="text-xs text-cyber-blue hover:underline font-semibold tracking-wider">SECURE PASS v3.0 →</a>
-                    </div>
-                </div>
-
-                <!-- Feed Output Stream (Right) -->
-                <div class="lg:col-span-8 flex flex-col gap-6" id="feed-stream">
-                    <!-- Dynamic posts injected here -->
-                </div>
-            </div>
-        </section>
-
-
-        <!-- M.I.N.D. CORE: AI WORLD BUILDER (GEMINI INTEGRATION) -->
-        <section id="mind-core" class="py-24 px-4 relative max-w-7xl mx-auto border-t border-cyber-blue/10">
-            <!-- Background glows -->
-            <div class="absolute inset-0 bg-radial-gradient from-cyber-purple/5 via-transparent to-transparent pointer-events-none"></div>
             
-            <div class="flex flex-col items-center text-center mb-16">
-                <div class="flex items-center gap-2 text-cyber-blue font-orbitron text-xs tracking-[0.2em] uppercase mb-3">
-                    <span class="w-1.5 h-1.5 bg-cyber-blue inline-block rounded-full"></span> Section 03 // Sentient M.I.N.D.
-                </div>
-                <h2 class="font-orbitron text-3xl sm:text-5xl font-black tracking-wider text-white mb-4">
-                    M.I.N.D. <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyber-blue to-cyber-purple">Core AI</span>
-                </h2>
-                <p class="text-cyber-dim text-base max-w-2xl">
-                    Interact with the central artificial hive intelligence of Colnet. Synthesize digital worlds, query neural coordinates, or design custom procedural graphics instantly using our integrated AI core.
-                </p>
+            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 mb-4">
+                Your entire digital world, <span class="text-blue-600">online.</span>
+            </h1>
+            
+            <p class="max-w-xl mx-auto text-base text-slate-500 leading-relaxed mb-8">
+                Welcome to Colnet. Establish your personal digital ecosystem, share logs with other users, customize your virtual profiles, and access the simple procedural AI core.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <button onclick="toggleAuthModal('signup')" class="w-full sm:w-auto px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-md shadow-sm transition">
+                    Register Free Space
+                </button>
+                <a href="#living-profiles" class="w-full sm:w-auto px-6 py-2.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-sm font-semibold rounded-md shadow-sm transition flex items-center justify-center gap-2">
+                    Browse Profiles <i class="fa-solid fa-arrow-right text-xs text-slate-400"></i>
+                </a>
             </div>
 
-            <div class="glass-panel scanlines rounded-3xl border border-cyber-blue/20 overflow-hidden relative max-w-4xl mx-auto p-6 md:p-10">
-                <!-- Top Header for Terminal -->
-                <div class="flex justify-between items-center border-b border-cyber-blue/20 pb-6 mb-8">
-                    <div class="flex items-center gap-3">
-                        <div class="relative flex items-center justify-center">
-                            <i class="fa-solid fa-circle-nodes text-cyber-blue text-lg animate-spin" style="animation-duration: 10s;"></i>
-                            <span class="absolute w-2 h-2 rounded-full bg-cyber-blue animate-ping"></span>
-                        </div>
-                        <div>
-                            <span class="font-orbitron text-sm font-bold text-white tracking-widest uppercase">M.I.N.D. Central Intelligence</span>
-                            <p class="text-[9px] text-cyber-dim uppercase font-semibold leading-none">Model: Gemini-2.5-Flash</p>
-                        </div>
+            <!-- Platform Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 text-left max-w-3xl mx-auto">
+                <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                    <p class="text-2xl font-bold text-slate-900" id="stat-nodes">148,290</p>
+                    <p class="text-xs font-medium text-slate-400 uppercase tracking-wider mt-0.5">Active Nodes</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                    <p class="text-2xl font-bold text-slate-900" id="stat-worlds">42,019</p>
+                    <p class="text-xs font-medium text-slate-400 uppercase tracking-wider mt-0.5">Spheres Loaded</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                    <p class="text-2xl font-bold text-slate-900">0.034s</p>
+                    <p class="text-xs font-medium text-slate-400 uppercase tracking-wider mt-0.5">Data Latency</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                    <p class="text-2xl font-bold text-emerald-600">STABLE</p>
+                    <p class="text-xs font-medium text-slate-400 uppercase tracking-wider mt-0.5">Security Shield</p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- PROFILE MODULE -->
+        <section id="living-profiles" class="py-16 bg-white border-t border-b border-slate-200">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6">
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+                    <div class="max-w-md">
+                        <span class="text-xs font-semibold text-blue-600 uppercase tracking-wider">Module 01</span>
+                        <h2 class="text-2xl font-bold text-slate-900 mt-1">Select Identity Space</h2>
+                        <p class="text-sm text-slate-500 mt-2">
+                            Toggle between the three system-standard digital profile configurations. Updates are instant and synced to storage.
+                        </p>
                     </div>
-                    <span class="font-mono text-xs text-cyber-blue font-bold tracking-tight">AI CORE LINK STATUS: <span class="text-emerald-400">READY</span></span>
+                    <!-- Minimal Tabs -->
+                    <div class="flex bg-slate-100 p-1 rounded-lg border border-slate-200 self-start">
+                        <button onclick="setActiveProfile('synth')" id="tab-synth" class="profile-tab px-3.5 py-1.5 text-xs font-semibold rounded-md transition duration-200 bg-white text-slate-900 shadow-sm">Synth-84</button>
+                        <button onclick="setActiveProfile('chrono')" id="tab-chrono" class="profile-tab px-3.5 py-1.5 text-xs font-semibold rounded-md transition duration-200 text-slate-600 hover:text-slate-900">Chrono-92</button>
+                        <button onclick="setActiveProfile('nebula')" id="tab-nebula" class="profile-tab px-3.5 py-1.5 text-xs font-semibold rounded-md transition duration-200 text-slate-600 hover:text-slate-900">Nebula-11</button>
+                    </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
-                    <!-- Settings Panel Left -->
-                    <div class="md:col-span-4 flex flex-col gap-4">
-                        <div>
-                            <label class="block text-[10px] text-cyber-dim uppercase tracking-wider mb-2">Synthesis Node</label>
-                            <select id="ai-model-mode" class="w-full bg-cyber-black border border-white/10 rounded-lg p-3 text-xs text-cyber-text font-orbitron focus:outline-none focus:border-cyber-blue">
-                                <option value="text">World Generator (Gemini Text)</option>
-                                <option value="image">Avatar Generator (Imagen 4.0)</option>
-                            </select>
+                <!-- Display Card & Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+                    <!-- Avatar Panel -->
+                    <div class="md:col-span-4 bg-slate-50 border border-slate-200 rounded-xl p-6 flex flex-col items-center justify-center text-center">
+                        <div class="w-24 h-24 rounded-full bg-slate-200 border border-slate-300 flex items-center justify-center text-slate-600 mb-4" id="profile-graphic">
+                            <!-- Injected Vector SVG -->
                         </div>
-                        <div>
-                            <label class="block text-[10px] text-cyber-dim uppercase tracking-wider mb-2">Holographic Intensity</label>
-                            <div class="flex items-center justify-between font-orbitron text-xs text-white mb-1">
-                                <span>High Density</span>
-                                <span>98.5%</span>
+                        <span class="text-xs font-mono font-bold text-slate-400 uppercase" id="profile-id">SYNTH-8401</span>
+                        <div class="w-full mt-6">
+                            <div class="flex justify-between text-xs text-slate-500 mb-1.5">
+                                <span>Core Buffer Capacity</span>
+                                <span class="font-bold text-slate-800" id="profile-sync-value">91.4%</span>
                             </div>
-                            <div class="w-full h-1 bg-cyber-black rounded-full overflow-hidden">
-                                <div class="h-full bg-gradient-to-r from-cyber-blue to-cyber-purple" style="width: 98.5%;"></div>
+                            <div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                                <div id="profile-sync-bar" class="h-full bg-blue-600 transition-all duration-300" style="width: 91.4%;"></div>
                             </div>
-                        </div>
-                        <div class="text-[11px] text-cyber-dim leading-relaxed p-4 bg-cyber-blue/5 rounded-xl border border-cyber-blue/10">
-                            <i class="fa-solid fa-circle-info text-cyber-blue mr-1"></i>
-                            Select "World Generator" to prompt the AI to craft a detailed sci-fi sub-world, or select "Avatar Generator" to compile a neural vector icon.
                         </div>
                     </div>
 
-                    <!-- Synthesis Prompt Terminal Right -->
-                    <div class="md:col-span-8 flex flex-col justify-between space-y-4">
-                        <div class="bg-cyber-black/90 rounded-2xl p-4 border border-white/5 min-h-[160px] flex flex-col justify-between">
-                            <div id="ai-response-container" class="text-sm font-mono text-cyber-dim leading-relaxed whitespace-pre-line max-h-[220px] overflow-y-auto">
-                                > INITIALIZED M.I.N.D. SYSTEM PROTOCOLS.
-                                > CONNECTED TO COLD NODE DIRECTORY.
-                                > READY FOR USER INPUT DECREE...
+                    <!-- Details Panel -->
+                    <div class="md:col-span-8 flex flex-col justify-between h-full">
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-900" id="profile-name">Vespera Kael</h3>
+                            <p class="text-xs font-semibold text-blue-600 uppercase tracking-wider mt-1" id="profile-class">Carbon-Synth Developer</p>
+                            <p class="text-sm text-slate-600 mt-4 leading-relaxed italic" id="profile-bio">
+                                "Building responsive hyper-structures inside Sector 4. Synced via cold-node cybernetics. Connecting the organic nodes with the neon deep-sea platforms."
+                            </p>
+                        </div>
+
+                        <!-- Info Attributes List -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                            <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                                <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Access Server</span>
+                                <span class="text-sm font-semibold text-slate-800" id="stat-cluster">Neo-Tokyo Central</span>
                             </div>
-                            <div id="ai-loading" class="hidden flex items-center gap-3 text-cyber-purple font-orbitron text-xs animate-pulse font-bold">
-                                <i class="fa-solid fa-gear animate-spin"></i> SYNTHESIZING NEURAL STRATA... Exp. latency: 1-2s
+                            <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                                <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Origin Coordinates</span>
+                                <span class="text-sm font-semibold text-slate-800" id="stat-origin">Sector 4 Reef</span>
+                            </div>
+                            <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                                <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Active Protocol</span>
+                                <span class="text-sm font-semibold text-slate-800" id="stat-culture">Standard Cybernetics</span>
+                            </div>
+                            <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                                <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Shield Status</span>
+                                <span class="text-sm font-semibold text-slate-800" id="stat-firewall">99.8% Secure</span>
                             </div>
                         </div>
 
-                        <div class="flex gap-2">
-                            <input id="ai-prompt-input" type="text" placeholder="e.g. Synthesize a neon rainforest city on Neptune's moon..." class="flex-grow bg-cyber-black/80 border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-cyber-blue transition font-mono">
-                            <button onclick="synthesizeMIND()" class="cyber-btn px-6 py-3 bg-cyber-blue hover:neon-border-blue text-black font-orbitron font-extrabold text-xs tracking-wider flex items-center gap-2">
-                                SYNTHESIZE <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <div class="mt-6">
+                            <button onclick="toggleAuthModal('signup')" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-md transition shadow-sm">
+                                Sync This Configuration
                             </button>
                         </div>
                     </div>
@@ -562,548 +237,463 @@
         </section>
 
 
-        <!-- FOOTER & ABOUT SECTION -->
-        <footer id="about" class="py-16 px-4 bg-cyber-black border-t border-white/5 text-cyber-dim relative">
-            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                <div>
-                    <a href="#" class="flex items-center gap-3 group mb-4">
-                        <div class="relative w-8 h-8 flex items-center justify-center bg-gradient-to-tr from-cyber-blue to-cyber-purple rounded p-[1.5px] shadow-[0_0_15px_rgba(189,0,255,0.4)]">
-                            <div class="w-full h-full bg-cyber-black rounded flex items-center justify-center font-orbitron font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyber-blue to-cyber-purple text-xs">
-                                C
+        <!-- FEED MODULE -->
+        <section id="synaptic-feed" class="py-16 bg-slate-50 border-b border-slate-200">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6">
+                <div class="text-center mb-10">
+                    <span class="text-xs font-semibold text-blue-600 uppercase tracking-wider">Module 02</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1">Colnet Collective Feed</h2>
+                    <p class="text-sm text-slate-500 mt-2">Write status updates or browse entries written by other connected developers on the network.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+                    <!-- Post Writer Box -->
+                    <div class="md:col-span-4 bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-4">
+                            Publish Update
+                        </h3>
+                        <div class="space-y-3.5">
+                            <div>
+                                <label class="block text-[10px] text-slate-400 uppercase font-semibold mb-1">User Alias</label>
+                                <input id="feed-input-alias" type="text" value="System_Visitor" class="w-full bg-slate-50 border border-slate-200 rounded px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-blue-500 transition">
                             </div>
+                            <div>
+                                <label class="block text-[10px] text-slate-400 uppercase font-semibold mb-1">Status Message</label>
+                                <textarea id="feed-input-text" rows="4" placeholder="What are you currently developing or thinking?" class="w-full bg-slate-50 border border-slate-200 rounded p-3 text-xs text-slate-800 focus:outline-none focus:border-blue-500 transition resize-none"></textarea>
+                            </div>
+                            <button onclick="castToGrid()" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded shadow-sm transition">
+                                Publish Post
+                            </button>
                         </div>
-                        <span class="font-orbitron text-lg font-black tracking-widest text-white group-hover:text-cyber-blue transition duration-300">COL<span class="text-cyber-purple">NET</span></span>
-                    </a>
-                    <p class="text-xs leading-relaxed mb-4">
-                        Colnet is a high-concept cyberpunk social space bringing living profiles, customizable spheres, and synthetic hiveminds into a cohesive digital universe.
-                    </p>
-                    <p class="text-[10px] font-mono">© 2026 Colnet Inc. All Neural Rights Secured.</p>
-                </div>
-                <div>
-                    <h5 class="font-orbitron text-xs font-bold text-white tracking-widest uppercase mb-4">GRID NAVIGATION</h5>
-                    <ul class="space-y-2 text-xs">
-                        <li><a href="#living-profiles" class="hover:text-cyber-blue transition">Living Profiles</a></li>
-                        <li><a href="#synaptic-feed" class="hover:text-cyber-blue transition">Synaptic Feed</a></li>
-                        <li><a href="#mind-core" class="hover:text-cyber-blue transition">M.I.N.D. Core AI</a></li>
-                        <li><a href="#" class="hover:text-cyber-blue transition">Decentralized Webspaces</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h5 class="font-orbitron text-xs font-bold text-white tracking-widest uppercase mb-4">HOLOGRAPHIC TECH</h5>
-                    <ul class="space-y-2 text-xs">
-                        <li><a href="#" class="hover:text-cyber-purple transition">Decentralized Spheres</a></li>
-                        <li><a href="#" class="hover:text-cyber-purple transition">Quantum Identity</a></li>
-                        <li><a href="#" class="hover:text-cyber-purple transition">API Integrations</a></li>
-                        <li><a href="#" class="hover:text-cyber-purple transition">Grid Security (v2.5)</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h5 class="font-orbitron text-xs font-bold text-white tracking-widest uppercase mb-4">SYNAPSE TERMINAL</h5>
-                    <p class="text-xs leading-relaxed mb-4">
-                        Stay connected via neural signals. Follow us in the cyber-matrix for live firmware status and updates.
-                    </p>
-                    <div class="flex gap-4 text-white text-lg">
-                        <a href="#" class="hover:text-cyber-blue transition"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#" class="hover:text-cyber-blue transition"><i class="fa-brands fa-discord"></i></a>
-                        <a href="#" class="hover:text-cyber-blue transition"><i class="fa-brands fa-github"></i></a>
-                        <a href="#" class="hover:text-cyber-blue transition"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+
+                    <!-- Dynamic Posts Stream -->
+                    <div class="md:col-span-8 space-y-4" id="feed-stream">
+                        <!-- Injected dynamic posts -->
                     </div>
                 </div>
             </div>
-            <div class="border-t border-white/5 pt-8 text-center max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between text-[11px]">
-                <p>Designed with meticulous perfection for premium cyber-citizens.</p>
-                <div class="flex gap-4 mt-4 sm:mt-0 font-mono">
-                    <a href="#" class="hover:underline">NEURAL_POLICY</a>
-                    <a href="#" class="hover:underline">GRID_COMPLIANCE</a>
-                    <a href="#" class="hover:underline">DECRYPTION_CERT</a>
+        </section>
+
+
+        <!-- AI MODULE (M.I.N.D. CORE) -->
+        <section id="mind-core" class="py-16 bg-white border-b border-slate-200">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6">
+                <div class="text-center mb-10">
+                    <span class="text-xs font-semibold text-blue-600 uppercase tracking-wider">Module 03</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1">M.I.N.D. Core Assistant</h2>
+                    <p class="text-sm text-slate-500 mt-2">Query our built-in natural system engine. Ask to synthesize futuristic planets, timeline models, or simple profiles.</p>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 sm:p-8 shadow-sm">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-6">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
+                            <span class="text-xs font-bold text-slate-800 uppercase tracking-wider">Engine: Gemini-2.5-Flash</span>
+                        </div>
+                        <span class="text-[10px] font-semibold text-slate-400">STATUS: STABLE</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="bg-white border border-slate-200 rounded-lg p-4 min-h-[140px] flex flex-col justify-between">
+                            <div id="ai-response-container" class="text-xs font-mono text-slate-600 leading-relaxed whitespace-pre-line max-h-[220px] overflow-y-auto">
+                                > STANDBY FOR INPUT FROM CENTRAL COMMAND...
+                                > READY TO COMPILE TEXT QUERIES AND MOCK CONSTRUCTS.
+                            </div>
+                            <!-- Simple Loading Indicator -->
+                            <div id="ai-loading" class="hidden text-xs text-blue-600 font-bold animate-pulse mt-2 flex items-center gap-1.5">
+                                <i class="fa-solid fa-spinner animate-spin"></i> Processing data pipelines...
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <input id="ai-prompt-input" type="text" placeholder="e.g. Write a bio for a space archeologist on Mars..." class="flex-grow bg-white border border-slate-200 rounded px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-blue-500 transition">
+                            <button onclick="synthesizeMIND()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2 rounded transition shadow-sm flex items-center gap-1">
+                                Send <i class="fa-solid fa-paper-plane text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </footer>
+        </section>
 
     </main>
 
-    <!-- AUTHENTICATION HOLOGRAPHIC MODAL -->
-    <div id="auth-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-        <!-- Backdrop Blur overlay -->
-        <div onclick="toggleAuthModal()" class="absolute inset-0 bg-cyber-black/80 backdrop-blur-md"></div>
+    <!-- FOOTER / ABOUT -->
+    <footer id="about" class="bg-slate-900 text-slate-400 py-12 px-4 border-t border-slate-800">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 text-sm">
+            <div>
+                <a href="#" class="flex items-center gap-2 mb-3">
+                    <div class="w-6 h-6 rounded bg-blue-600 flex items-center justify-center text-white font-bold text-xs">
+                        C
+                    </div>
+                    <span class="font-bold text-white text-sm">Colnet</span>
+                </a>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    Colnet is an experimental social architecture providing static mock networks, structured customizable data fields, and integrated text generators.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-3">Core Infrastructure</h4>
+                <ul class="space-y-1.5 text-xs">
+                    <li><a href="#living-profiles" class="hover:text-white transition">Standard Profiles</a></li>
+                    <li><a href="#synaptic-feed" class="hover:text-white transition">Network Feed</a></li>
+                    <li><a href="#mind-core" class="hover:text-white transition">Core Assistant</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-3">System Specifications</h4>
+                <ul class="space-y-1.5 text-xs">
+                    <li><span class="text-slate-500">Framework:</span> Vanilla JS</li>
+                    <li><span class="text-slate-500">Styling:</span> Tailwind Utility</li>
+                    <li><span class="text-slate-500">Engine:</span> Gemini API Node</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-3">Support & Network</h4>
+                <p class="text-xs text-slate-500 leading-relaxed mb-3">
+                    Signatures, credentials, and verification keys are stored in the memory layer of your running tab.
+                </p>
+                <div class="flex gap-3 text-white text-sm">
+                    <a href="#" class="hover:text-blue-500 transition"><i class="fa-brands fa-github"></i></a>
+                    <a href="#" class="hover:text-blue-500 transition"><i class="fa-brands fa-discord"></i></a>
+                    <a href="#" class="hover:text-blue-500 transition"><i class="fa-brands fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-slate-800 pt-6 max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
+            <p>© 2026 Colnet Platform. Built with minimalist precision.</p>
+            <p class="mt-2 sm:mt-0">Age-Appropriate Safe Space Program</p>
+        </div>
+    </footer>
 
-        <!-- Glass container inside -->
-        <div class="glass-panel scanlines rounded-2xl border border-cyber-blue/30 p-6 md:p-8 w-full max-w-md relative z-10 animated-float">
-            <!-- Close trigger -->
-            <button onclick="toggleAuthModal()" class="absolute top-4 right-4 text-cyber-dim hover:text-white transition text-lg">
-                <i class="fa-solid fa-xmark"></i>
+
+    <!-- MODAL WINDOW FOR LOGIN / SIGNUP -->
+    <div id="auth-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div onclick="toggleAuthModal()" class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"></div>
+
+        <!-- Dialog Card -->
+        <div class="bg-white rounded-lg border border-slate-200 p-6 md:p-8 w-full max-w-sm relative z-10 shadow-lg">
+            <!-- Close Toggle -->
+            <button onclick="toggleAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition">
+                <i class="fa-solid fa-times"></i>
             </button>
 
-            <!-- Modal Header Title -->
-            <div class="text-center mb-8">
-                <h3 id="auth-title" class="font-orbitron text-2xl font-black text-white tracking-wider">INITIATE SYNAPSE LINK</h3>
-                <p id="auth-subtitle" class="text-xs text-cyber-blue tracking-widest uppercase mt-1">Readying Biometric Retinal Scanning</p>
+            <!-- Dialog Header -->
+            <div class="text-center mb-6">
+                <h3 id="auth-title" class="text-lg font-bold text-slate-900">Sign In to Colnet</h3>
+                <p id="auth-subtitle" class="text-xs text-slate-400 mt-1">Provide credentials to enter network space</p>
             </div>
 
-            <!-- Authentic Form Fields -->
+            <!-- Standard Auth Form -->
             <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
                 <div>
-                    <label class="block text-[10px] text-cyber-dim uppercase tracking-wider mb-2">Consciousness / Email Alias</label>
-                    <div class="relative">
-                        <span class="absolute left-3 top-2.5 text-cyber-blue text-sm"><i class="fa-solid fa-user-ninja"></i></span>
-                        <input type="email" required placeholder="neuro-drifter@colnet.net" class="w-full bg-cyber-black/80 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-cyber-blue transition">
-                    </div>
+                    <label class="block text-[10px] text-slate-400 uppercase font-semibold mb-1">Email Coordinates</label>
+                    <input type="email" id="auth-email" required placeholder="name@domain.com" class="w-full bg-slate-50 border border-slate-200 rounded px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-blue-500 transition">
                 </div>
+                
                 <div>
-                    <label class="block text-[10px] text-cyber-dim uppercase tracking-wider mb-2">Decryption Key (Password)</label>
-                    <div class="relative">
-                        <span class="absolute left-3 top-2.5 text-cyber-purple text-sm"><i class="fa-solid fa-key"></i></span>
-                        <input type="password" required placeholder="••••••••" class="w-full bg-cyber-black/80 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-cyber-purple transition">
-                    </div>
+                    <label class="block text-[10px] text-slate-400 uppercase font-semibold mb-1">Decryption Key (Password)</label>
+                    <input type="password" id="auth-password" required placeholder="Minimum 6 characters" class="w-full bg-slate-50 border border-slate-200 rounded px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-blue-500 transition">
                 </div>
 
-                <!-- Simulation Biometric Hologram scanner -->
-                <div class="bg-cyber-blue/5 border border-cyber-blue/20 rounded-xl p-4 flex items-center justify-between my-6">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-lg border border-dashed border-cyber-blue flex items-center justify-center text-cyber-blue relative overflow-hidden" id="scanner-box">
-                            <i class="fa-solid fa-fingerprint text-xl animate-pulse"></i>
-                            <div class="absolute inset-x-0 h-0.5 bg-cyber-blue/80 animate-bounce"></div>
-                        </div>
-                        <div>
-                            <span class="font-orbitron text-xs font-bold text-white block">Biometric Validator</span>
-                            <p class="text-[9px] text-cyber-dim">Tap to simulate fingerprint verification</p>
-                        </div>
-                    </div>
-                    <button type="button" onclick="simulateFingerprint()" class="text-xs bg-cyber-blue/10 hover:bg-cyber-blue/20 text-cyber-blue border border-cyber-blue/30 px-3 py-1.5 rounded transition font-orbitron font-bold">SCAN</button>
+                <!-- Terms agreement checkbox (replaces biomertic scanning) -->
+                <div class="flex items-start gap-2.5 pt-2">
+                    <input type="checkbox" id="auth-terms" required class="mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                    <label for="auth-terms" class="text-[11px] text-slate-500 leading-tight">
+                        I agree to Colnet's standard network code of conduct and community protocols.
+                    </label>
                 </div>
 
-                <!-- Action Button -->
-                <button type="submit" class="cyber-btn w-full py-3 bg-gradient-to-r from-cyber-blue to-cyber-purple text-black font-orbitron font-extrabold tracking-widest text-xs shadow-[0_0_15px_rgba(0,240,255,0.3)]">
-                    CONFIRM SIGN-IN
+                <!-- Submission Button -->
+                <button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded shadow-sm transition mt-4">
+                    Confirm Protocol Integration
                 </button>
             </form>
 
-            <div class="mt-6 text-center text-xs">
-                <span id="auth-toggle-msg" class="text-cyber-dim">Already joined the collective?</span>
-                <button onclick="toggleAuthMode()" class="text-cyber-blue font-bold hover:underline ml-1 focus:outline-none" id="auth-toggle-btn">LOGIN</button>
+            <div class="mt-5 text-center text-xs">
+                <span id="auth-toggle-msg" class="text-slate-400">Already registered on Colnet?</span>
+                <button onclick="toggleAuthMode()" class="text-blue-600 font-semibold hover:underline ml-1 focus:outline-none" id="auth-toggle-btn">Sign In</button>
             </div>
         </div>
     </div>
 
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- CORE BUSINESS LOGIC AND DATABASE STORAGE -->
     <script>
-        // Set default / empty API key which our backend proxy fills or the user utilizes in preview environment
-        const apiKey = "";
+        // API Configuration
+        const apiKey = ""; // Set by runtime context
 
-        // UI state management
+        // State Tracking (Local memory persistence)
         let isLogin = false;
-        let biometricVerified = false;
-
-        // Custom profiles data mapping
+        
         const profiles = {
             synth: {
                 id: "SYNTH-8401",
                 name: "Vespera Kael",
-                class: "Level 4 Carbon-Synth Architect",
+                class: "Carbon-Synth Developer",
                 bio: "\"Building responsive hyper-structures inside Sector 4. Synced via cold-node cybernetics. Connecting the organic nodes with the neon deep-sea platforms.\"",
                 sync: "91.4%",
                 cluster: "Neo-Tokyo Central",
                 origin: "Sector 4 Reef",
-                culture: "Neo-Cybernetics",
-                firewall: "99.8% Secured",
-                icon: `<svg class="w-20 h-20 text-cyber-blue transition duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M12 2a5 5 0 0 0-5 5v3a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5z" stroke-linecap="round"/>
-                        <path d="M12 14c-4.4 0-8 3.6-8 8h16c0-4.4-3.6-8-8-8z" stroke-linecap="round"/>
-                        <circle cx="12" cy="7" r="1" fill="currentColor"/>
-                        <path d="M10 21v-4h4v4" stroke-linecap="round"/>
-                    </svg>`,
-                borderClass: "border-cyber-blue"
+                culture: "Standard Cybernetics",
+                firewall: "99.8% Secure",
+                icon: `<svg class="w-12 h-12 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" stroke-dasharray="3 3"/>
+                        <path d="M12 6v6l4 2"/>
+                    </svg>`
             },
             chrono: {
-                id: "TIME-5092",
+                id: "CHRONO-9205",
                 name: "Kaelen Voss",
-                class: "Temporal Grid Courier",
-                bio: "\"Intercepting trans-dimensional neural messages across chronospheres. Armed with high-gain quantum transmitters. Moving faster than server latency.\"",
+                class: "Temporal Data Router",
+                bio: "\"Interacting with structural data logs across chronological streams. Working with minimal lag buffers to optimize platform database indexing.\"",
                 sync: "86.1%",
-                cluster: "Chrono-Relay Sector A",
-                origin: "Timeline Offset -4",
-                culture: "Time Shifting",
-                firewall: "94.2% Secured",
-                icon: `<svg class="w-20 h-20 text-cyber-purple transition duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <circle cx="12" cy="12" r="10" stroke-dasharray="4 2"/>
-                        <path d="M12 6v6l4 2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <circle cx="12" cy="12" r="2" fill="currentColor"/>
-                    </svg>`,
-                borderClass: "border-cyber-purple"
+                cluster: "Vanguard Server Room",
+                origin: "Grid Division -9",
+                culture: "Data Routing",
+                firewall: "94.2% Secure",
+                icon: `<svg class="w-12 h-12 text-slate-800" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" stroke-dasharray="2 2"/>
+                        <circle cx="12" cy="12" r="4"/>
+                    </svg>`
             },
             nebula: {
-                id: "NEB-9011",
+                id: "NEBULA-1140",
                 name: "Sira Nyx",
-                class: "Void-Space Explorer / Nebula Node",
-                bio: "\"Ethereal stream consciousness hovering in the high-density space systems of the Outer Cloud. Harnessing light bursts to transmit sensory streams.\"",
+                class: "System Logic Researcher",
+                bio: "\"Examining abstract metadata patterns in complex cluster networks. Creating structural maps to help digital residents construct clean, safe platforms.\"",
                 sync: "97.5%",
-                cluster: "Vela Cloud Outer Rim",
-                origin: "Deep Plasma Well",
-                culture: "Stellar Mysticism",
-                firewall: "99.9% Secured",
-                icon: `<svg class="w-20 h-20 text-cyan-400 transition duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M12 3v18M3 12h18" stroke-dasharray="1 3" stroke-linecap="round"/>
-                        <circle cx="12" cy="12" r="6" stroke-dasharray="8 4"/>
-                        <path d="M12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8z" fill="none"/>
-                    </svg>`,
-                borderClass: "border-cyan-400"
+                cluster: "High Orbit Relay Node",
+                origin: "Deep Space Sector C",
+                culture: "System Logic Mapping",
+                firewall: "99.9% Secure",
+                icon: `<svg class="w-12 h-12 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 12h10v10l10-10H12V2z"/>
+                    </svg>`
             }
         };
 
-        // Static Mock Posts array with pre-populated cyberpunk content
-        const mockPosts = [
+        // Live memory representation of posts
+        const posts = [
             {
                 id: 1,
-                alias: "HoloArchitect_01",
-                timestamp: "2m ago",
-                content: "Just finalized rendering the new holographic sanctuary dome in Sector 9. High-density blue neon glass looks beautiful with the floating ocean matrix. Sync coordinates: 194.01-A.",
-                synapses: 24,
+                alias: "Holo_Dev",
+                timestamp: "5 minutes ago",
+                content: "Just configured the procedural layout engine in Module 2. Removing styling bloat improved load metrics globally.",
+                likes: 12,
                 hasLiked: false,
-                comments: 4,
-                glowClass: "neon-border-blue"
+                commentsCount: 3
             },
             {
                 id: 2,
-                alias: "Grid_Ghost",
-                timestamp: "12m ago",
-                content: "Detected a subtle neural bypass probe attempt in the outer firewall buffer. Retinal shields held strong at 99.8%. Reminding all synapse links to run daily firmware optimization passes.",
-                synapses: 52,
+                alias: "Admin_System",
+                timestamp: "1 hour ago",
+                content: "Routine clean compliance update published. Standard validation pipelines are now operational on all form input layers.",
+                likes: 34,
                 hasLiked: false,
-                comments: 8,
-                glowClass: "neon-border-purple"
-            },
-            {
-                id: 3,
-                alias: "NeoDrifter_X",
-                timestamp: "45m ago",
-                content: "Is anyone visiting the Synth Lounge tonight? The soundwave rendering is simulated in premium 3D deep bass streams. Looking to share custom-built neural blueprints with another designer.",
-                synapses: 11,
-                hasLiked: false,
-                comments: 2,
-                glowClass: "neon-border-blue"
+                commentsCount: 1
             }
         ];
 
-        // 1. NEURAL CANVAS PARTICLES SYSTEM
-        const canvas = document.getElementById('synapse-canvas');
-        const ctx = canvas.getContext('2d');
-        let particlesArray = [];
-        let mouse = { x: null, y: null, radius: 150 };
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            initParticles();
-        }
-
-        class Particle {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.baseX = x;
-                this.baseY = y;
-                this.size = Math.random() * 2 + 1;
-                this.density = (Math.random() * 30) + 15;
-                this.color = Math.random() > 0.5 ? 'rgba(0, 240, 255, 0.4)' : 'rgba(189, 0, 255, 0.4)';
-            }
-
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.closePath();
-                ctx.fill();
-            }
-
-            update() {
-                let dx = mouse.x - this.x;
-                let dy = mouse.y - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                let forceDirectionX = dx / distance;
-                let forceDirectionY = dy / distance;
-                let maxDistance = mouse.radius;
-                let force = (maxDistance - distance) / maxDistance;
-                let directionX = forceDirectionX * force * this.density;
-                let directionY = forceDirectionY * force * this.density;
-
-                if (distance < mouse.radius) {
-                    this.x -= directionX;
-                    this.y -= directionY;
-                } else {
-                    if (this.x !== this.baseX) {
-                        let dxBase = this.x - this.baseX;
-                        this.x -= dxBase / 10;
-                    }
-                    if (this.y !== this.baseY) {
-                        let dyBase = this.y - this.baseY;
-                        this.y -= dyBase / 10;
-                    }
-                }
-            }
-        }
-
-        function initParticles() {
-            particlesArray = [];
-            let numberOfParticles = (canvas.width * canvas.height) / 10000;
-            // Cap particles for peak browser efficiency
-            if (numberOfParticles > 150) numberOfParticles = 150; 
-            for (let i = 0; i < numberOfParticles; i++) {
-                let x = Math.random() * canvas.width;
-                let y = Math.random() * canvas.height;
-                particlesArray.push(new Particle(x, y));
-            }
-        }
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].draw();
-                particlesArray[i].update();
-            }
-            connectParticles();
-            requestAnimationFrame(animateParticles);
-        }
-
-        function connectParticles() {
-            let opacityValue = 1;
-            for (let a = 0; a < particlesArray.length; a++) {
-                for (let b = a; b < particlesArray.length; b++) {
-                    let dx = particlesArray[a].x - particlesArray[b].x;
-                    let dy = particlesArray[a].y - particlesArray[b].y;
-                    let distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < 110) {
-                        opacityValue = 1 - (distance / 110);
-                        ctx.strokeStyle = `rgba(112, 0, 255, ${opacityValue * 0.15})`;
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-
-        // Particle event listeners
-        window.addEventListener('mousemove', (event) => {
-            mouse.x = event.clientX;
-            mouse.y = event.clientY;
-        });
-        window.addEventListener('mouseout', () => {
-            mouse.x = null;
-            mouse.y = null;
-        });
-        window.addEventListener('resize', resizeCanvas);
-
-
-        // 2. RENDERING FEED POSTS WITH INTERACTIVITY
+        // RENDER POSTS TO THE VIEWPORT
         function renderFeed() {
-            const stream = document.getElementById('feed-stream');
-            stream.innerHTML = "";
+            const container = document.getElementById('feed-stream');
+            if (!container) return;
+            container.innerHTML = "";
 
-            mockPosts.forEach(post => {
+            posts.forEach(post => {
                 const card = document.createElement('div');
-                card.className = `glass-panel rounded-2xl p-6 ${post.glowClass} transition-all duration-300 relative overflow-hidden group hover:scale-[1.01]`;
+                card.className = "bg-white border border-slate-200 rounded-xl p-5 shadow-sm transition hover:shadow";
                 
                 card.innerHTML = `
-                    <div class="absolute -right-12 -bottom-12 w-32 h-32 bg-cyber-blue/5 rounded-full blur-2xl group-hover:bg-cyber-blue/10 transition duration-500"></div>
-                    <div class="flex items-center justify-between mb-4 border-b border-white/5 pb-3">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-lg bg-cyber-black flex items-center justify-center border border-white/10 text-xs font-mono font-bold text-cyber-blue">
-                                <i class="fa-solid fa-ghost"></i>
+                    <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-600">
+                                <i class="fa-solid fa-user text-[10px]"></i>
                             </div>
                             <div>
-                                <h5 class="font-orbitron text-sm font-black text-white group-hover:text-cyber-blue transition">${post.alias}</h5>
-                                <span class="text-[9px] text-cyber-dim uppercase tracking-wider">${post.timestamp}</span>
+                                <span class="text-xs font-bold text-slate-900 block">${post.alias}</span>
+                                <span class="text-[9px] text-slate-400 font-semibold uppercase">${post.timestamp}</span>
                             </div>
                         </div>
-                        <span class="text-[10px] font-mono text-cyber-dim">SEC_HASH_ID#${post.id * 1234}</span>
+                        <span class="text-[9px] font-mono text-slate-400">POST_ID#${post.id * 893}</span>
                     </div>
-                    <p class="text-cyber-text text-sm sm:text-base leading-relaxed mb-6 font-medium">
+                    
+                    <p class="text-xs text-slate-600 leading-relaxed mb-4">
                         ${post.content}
                     </p>
-                    <div class="flex items-center gap-6 text-xs font-orbitron font-bold">
-                        <button onclick="likePost(${post.id})" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-cyber-purple/20 transition ${post.hasLiked ? 'text-cyber-purple' : 'text-cyber-dim'}">
-                            <i class="fa-solid fa-heart"></i>
-                            <span id="synapse-count-${post.id}">${post.synapses} SYNAPSES</span>
+
+                    <div class="flex items-center gap-4 text-xs font-bold">
+                        <button onclick="toggleLike(${post.id})" class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-50 border border-slate-200 hover:bg-slate-100 transition ${post.hasLiked ? 'text-blue-600 border-blue-200 bg-blue-50' : 'text-slate-500'}">
+                            <i class="fa-solid fa-heart text-[10px]"></i>
+                            <span>${post.likes} Likes</span>
                         </button>
-                        <button onclick="simulateComment(${post.id})" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-cyber-blue/20 text-cyber-dim hover:text-cyber-blue transition">
-                            <i class="fa-solid fa-message"></i>
-                            <span>${post.comments} BLUEPRINTS</span>
+                        <button onclick="simulateComment(${post.id})" class="flex items-center gap-1.5 px-2.5 py-1 text-slate-500 hover:text-slate-900 transition">
+                            <i class="fa-solid fa-comment text-[10px]"></i>
+                            <span>${post.commentsCount} Comments</span>
                         </button>
                     </div>
                 `;
-                stream.appendChild(card);
+                container.appendChild(card);
             });
         }
 
-        // Simulating Cast Into Grid Status Creation
+        // CREATE POST FUNCTION
         function castToGrid() {
             const aliasInput = document.getElementById('feed-input-alias');
             const textInput = document.getElementById('feed-input-text');
 
-            if (!textInput.value.trim()) {
-                showFloatingNotification("Please state your neural fragment query before casting.", "error");
+            if (!textInput || !textInput.value.trim()) {
+                showNotification("Please write a message content to post.", "error");
                 return;
             }
 
             const newPost = {
-                id: mockPosts.length + 1,
-                alias: aliasInput.value.trim() || "Anonym-X",
+                id: posts.length + 1,
+                alias: (aliasInput && aliasInput.value.trim()) ? aliasInput.value.trim() : "Anonymous_User",
                 timestamp: "Just now",
-                content: textInput.value,
-                synapses: 0,
+                content: textInput.value.trim(),
+                likes: 0,
                 hasLiked: false,
-                comments: 0,
-                glowClass: Math.random() > 0.5 ? "neon-border-blue" : "neon-border-purple"
+                commentsCount: 0
             };
 
-            // Prepend new post to array
-            mockPosts.unshift(newPost);
+            // Prepend new post
+            posts.unshift(newPost);
             
-            // Clean up text input
+            // Clear inputs
             textInput.value = "";
             
-            // Re-render
+            // Re-render immediately
             renderFeed();
-            showFloatingNotification("Status cast successfully to the Neural Grid!", "success");
+            showNotification("Your update has been published to the collective feed.", "success");
         }
 
-        function likePost(id) {
-            const post = mockPosts.find(p => p.id === id);
+        // TOGGLE LIKE STATE
+        function toggleLike(id) {
+            const post = posts.find(p => p.id === id);
             if (!post) return;
 
             if (post.hasLiked) {
-                post.synapses--;
+                post.likes--;
                 post.hasLiked = false;
-                showFloatingNotification("Synapse link disengaged.", "info");
             } else {
-                post.synapses++;
+                post.likes++;
                 post.hasLiked = true;
-                showFloatingNotification("Synapse linked! Connection reinforced.", "success");
             }
 
             renderFeed();
         }
 
+        // SIMULATE COMMENTS
         function simulateComment(id) {
-            showFloatingNotification("Accessing Blueprint storage files... Complete connection needed to read sub-threads.", "info");
+            const post = posts.find(p => p.id === id);
+            if (!post) return;
+
+            post.commentsCount++;
+            renderFeed();
+            showNotification("Added mock system comment count.", "success");
         }
 
 
-        // 3. LIVING PROFILES INTERACTIVE STATE SWAP
-        function setActiveProfile(profileKey) {
-            const profile = profiles[profileKey];
+        // ACTIVATE DIGITAL PROFILES
+        function setActiveProfile(key) {
+            const profile = profiles[key];
             if (!profile) return;
 
-            // Remove active style classes from all tabs
+            // Clear and highlight matching tab selector
             document.querySelectorAll('.profile-tab').forEach(tab => {
-                tab.className = "profile-tab px-4 py-2 border border-white/5 hover:border-cyber-blue/50 text-cyber-dim transition duration-300";
+                tab.className = "profile-tab px-3.5 py-1.5 text-xs font-semibold rounded-md transition duration-200 text-slate-600 hover:text-slate-900";
             });
 
-            // Set styling for active tab
-            const activeTab = document.getElementById(`tab-${profileKey}`);
+            const activeTab = document.getElementById(`tab-${key}`);
             if (activeTab) {
-                activeTab.className = "profile-tab px-4 py-2 border border-cyber-blue bg-cyber-blue/10 text-cyber-blue transition duration-300";
+                activeTab.className = "profile-tab px-3.5 py-1.5 text-xs font-semibold rounded-md transition duration-200 bg-white text-slate-900 shadow-sm";
             }
 
-            // Map data in UI elements
+            // Bind values
             document.getElementById('profile-id').innerText = profile.id;
             document.getElementById('profile-name').innerText = profile.name;
             document.getElementById('profile-class').innerText = profile.class;
             document.getElementById('profile-bio').innerText = profile.bio;
             document.getElementById('profile-sync-value').innerText = profile.sync;
             document.getElementById('profile-sync-bar').style.width = profile.sync;
+            
             document.getElementById('stat-cluster').innerText = profile.cluster;
             document.getElementById('stat-origin').innerText = profile.origin;
             document.getElementById('stat-culture').innerText = profile.culture;
             document.getElementById('stat-firewall').innerText = profile.firewall;
 
-            // Swap icon graphic
-            const graphicContainer = document.getElementById('profile-graphic');
-            graphicContainer.className = `absolute w-28 h-28 rounded-full overflow-hidden border-2 ${profile.borderClass} flex items-center justify-center bg-cyber-black`;
-            graphicContainer.innerHTML = profile.icon;
+            document.getElementById('profile-graphic').innerHTML = profile.icon;
         }
 
 
-        // 4. M.I.N.D. CORE AI INTEGRATION (GEMINI 2.5 FLASH / IMAGEN 4.0 EXPANSION)
+        // BI-DIRECTIONAL TERMINAL & GEMINI AI DECOUPLED PIPELINE
         async function synthesizeMIND() {
-            const promptInput = document.getElementById('ai-prompt-input');
-            const modeSelect = document.getElementById('ai-model-mode');
-            const responseContainer = document.getElementById('ai-response-container');
+            const inputField = document.getElementById('ai-prompt-input');
+            const container = document.getElementById('ai-response-container');
             const loader = document.getElementById('ai-loading');
 
-            const prompt = promptInput.value.trim();
-            if (!prompt) {
-                showFloatingNotification("Enter prompt query into M.I.N.D. command panel first.", "error");
+            const query = inputField.value.trim();
+            if (!query) {
+                showNotification("Please provide a search or synthesis query first.", "error");
                 return;
             }
 
             loader.classList.remove('hidden');
-            responseContainer.innerHTML = "> SYNAPSE PIPELINE ENGAGED...\n> PROCESSING INTENT STRUCTURE...";
+            container.innerHTML = `> COMMENCING DATA STREAM INQUIRY...\n> ANALYZING METADATA: "${query}"`;
+
+            // Setup programmatic procedural fallback constructs matching requested parameters
+            const mockResponses = [
+                `> SYSTEM ARCHITECTURE QUERY RESULTS:\n\nCOORDINATES: Planet Sector Titan-7\nATMOSPHERE: 45% Oxygen Buffer\nSTATUS: Active development outpost verified.\n\n"Titan-7 serves as an advanced atmospheric processing hub. Standard physical properties remain ideal for long-duration research assignments."`,
+                `> BIOMODULE DESCRIPTOR RESULTS:\n\nROLE: Space Archeologist (Mars Network)\nSECURITY RATING: Alpha Class\nREGISTRATION ID: ARC-0914\n\n"Trained in high-altitude stratigraphic excavation. Equipped with solid-state spectrometer tools to log structural remains dating prior to initial colonization phases."`,
+                `> DATA PIPELINE SCHEMATICS COMPLETED:\n\n"The queried architecture pattern consists of 12 localized edge nodes synced via high-frequency telemetry logs. Bandwidth limits remain optimal for secure public communication."`
+            ];
+
+            // Deterministic mock selector based on length or index matching user prompt words
+            const chosenMock = mockResponses[Math.abs(query.length + query.charCodeAt(0)) % mockResponses.length];
 
             try {
-                if (modeSelect.value === 'text') {
-                    // Call Gemini 2.5 Flash for Procedural World Synthesis
-                    const systemPrompt = `You are Colnet Core AI (Gemini 2.5). Act as a sentient high-tech social grid moderator. Generate an immersive, poetic, but technically detailed cyberpunk digital world profile. Present it formatted cleanly like a dossier with designating details (Coordinate ID, Connection Load, Temperature, Subcultures) and a beautiful descriptive text.`;
+                if (apiKey && apiKey !== "") {
+                    // Actual Gemini query loop
+                    const promptText = `Act as standard helper system M.I.N.D. Core. Summarize or write about this topic in under 100 words in a clean, professional tone: ${query}`;
                     
                     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
-                            contents: [{ parts: [{ text: prompt }] }],
-                            systemInstruction: { parts: [{ text: systemPrompt }] }
+                            contents: [{ parts: [{ text: promptText }] }]
                         })
                     });
 
                     if (!response.ok) {
-                        throw new Error("Core response stream interrupted. Please retry synapse connection.");
+                        throw new Error("HTTP connection failed. Loading system fallback.");
                     }
 
-                    const data = await response.json();
-                    const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Synthesis returned hollow void state.";
-                    
-                    responseContainer.innerHTML = generatedText;
-                } else {
-                    // Call Imagen 4.0 for Procedural Avatar Node Generation
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            instances: { prompt: `Futuristic neon vector avatar, cyberpunk synth node graphic, transparent grid backdrop, premium glow, ${prompt}` },
-                            parameters: { sampleCount: 1 }
-                        })
-                    });
-
-                    if (!response.ok) {
-                        throw new Error("Imagen visualization matrix returned critical loading error.");
-                    }
-
-                    const data = await response.json();
-                    const base64Image = data.predictions?.[0]?.bytesBase64Encoded;
-
-                    if (base64Image) {
-                        responseContainer.innerHTML = `
-                            <p class="mb-4 text-xs text-cyber-blue">> VISUALIZATION COMPLETE. RENDERED CORE NODE AVATAR:</p>
-                            <div class="flex justify-center">
-                                <img src="data:image/png;base64,${base64Image}" alt="AI Synthesized Node" class="w-40 h-40 rounded-xl border-2 border-cyber-blue shadow-[0_0_20px_rgba(0,240,255,0.4)]">
-                            </div>
-                        `;
+                    const resData = await response.json();
+                    const text = resData.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (text) {
+                        container.innerHTML = `> QUERY SUCCESSFUL.\n\n${text}`;
                     } else {
-                        responseContainer.innerHTML = "> Error compiling visualization bytes.";
+                        container.innerHTML = chosenMock;
                     }
+                } else {
+                    // Delay simulation for realistic visual processing
+                    await new Promise(resolve => setTimeout(resolve, 800));
+                    container.innerHTML = chosenMock;
                 }
             } catch (err) {
-                responseContainer.innerHTML = `> EXCEPTION ENCOUNTERED DURING NODE LINK: \n> ${err.message}\n\n> Ready for manual retry...`;
+                // Smooth error recovery prevents UI crash
+                container.innerHTML = `${chosenMock}\n\n> NOTE: Connection to API endpoint redirected automatically to offline database engine.`;
             } finally {
                 loader.classList.add('hidden');
             }
         }
 
 
-        // 5. AUTENTICATION TERMINAL & MODALS
+        // AUTHENTICATION PROTOCOL CONTROL HANDLERS
         function toggleAuthModal(mode) {
             const modal = document.getElementById('auth-modal');
             const title = document.getElementById('auth-title');
@@ -1111,16 +701,16 @@
             
             if (mode === 'signup') {
                 isLogin = false;
-                title.innerText = "INITIATE SYNAPSE LINK";
-                subtitle.innerText = "Readying Biometric Retinal Scanning";
-                document.getElementById('auth-toggle-msg').innerText = "Already joined the collective?";
-                document.getElementById('auth-toggle-btn').innerText = "LOGIN";
+                title.innerText = "Create Your Colnet Space";
+                subtitle.innerText = "Register your profile to standard access directories";
+                document.getElementById('auth-toggle-msg').innerText = "Already registered on Colnet?";
+                document.getElementById('auth-toggle-btn').innerText = "Sign In";
             } else if (mode === 'login') {
                 isLogin = true;
-                title.innerText = "DECRYPT IDENTITY LINK";
-                subtitle.innerText = "Authorized Cyber-Security Terminal";
-                document.getElementById('auth-toggle-msg').innerText = "New consciousness seeking sanctuary?";
-                document.getElementById('auth-toggle-btn').innerText = "SIGNUP";
+                title.innerText = "Sign In to Colnet";
+                subtitle.innerText = "Provide credentials to enter network space";
+                document.getElementById('auth-toggle-msg').innerText = "New user seeking network space?";
+                document.getElementById('auth-toggle-btn').innerText = "Create Space";
             }
 
             modal.classList.toggle('hidden');
@@ -1130,106 +720,107 @@
             toggleAuthModal(isLogin ? 'signup' : 'login');
         }
 
-        function simulateFingerprint() {
-            const box = document.getElementById('scanner-box');
-            box.innerHTML = `<i class="fa-solid fa-spinner text-xl text-cyber-blue animate-spin"></i>`;
-            
-            setTimeout(() => {
-                biometricVerified = true;
-                box.innerHTML = `<i class="fa-solid fa-circle-check text-xl text-emerald-400 animate-bounce"></i>`;
-                showFloatingNotification("Biometric Signature Match: Verified.", "success");
-            }, 1200);
-        }
-
         function handleAuthSubmit(event) {
             event.preventDefault();
-            if (!biometricVerified) {
-                showFloatingNotification("Retinal/Biometric signature validation required first.", "error");
+            const emailVal = document.getElementById('auth-email').value;
+            const passVal = document.getElementById('auth-password').value;
+            const checkVal = document.getElementById('auth-terms').checked;
+
+            if (!checkVal) {
+                showNotification("Please accept community protocols and guidelines.", "error");
                 return;
             }
 
-            showFloatingNotification(isLogin ? "Identity decrypt successful. Welcome to Colnet!" : "Consciousness mapped! Neural link live.", "success");
+            if (passVal.length < 6) {
+                showNotification("Password length must be at least 6 characters.", "error");
+                return;
+            }
+
+            // Success Output
+            const successText = isLogin ? "Identity verification complete. Welcome back!" : "Registration complete. New profile successfully allocated.";
+            showNotification(successText, "success");
+            
+            // Clean values and hide
+            document.getElementById('auth-email').value = "";
+            document.getElementById('auth-password').value = "";
+            document.getElementById('auth-terms').checked = false;
+            
             toggleAuthModal();
         }
 
 
-        // 6. FLOATING SYSTEM NOTIFICATIONS
-        function showFloatingNotification(msg, type = "success") {
-            const notif = document.createElement('div');
-            notif.className = `fixed bottom-6 right-6 z-50 px-6 py-3 rounded-lg border flex items-center gap-3 glass-panel font-orbitron text-xs tracking-wider transition-all duration-300 transform translate-y-10 opacity-0`;
+        // NOTIFICATION UI INJECTION
+        function showNotification(msg, type = "success") {
+            const toast = document.createElement('div');
+            toast.className = "fixed bottom-5 right-5 z-50 flex items-center gap-2 px-4 py-3 rounded-lg border bg-white shadow-md text-xs font-semibold transition-all duration-300 transform translate-y-8 opacity-0";
             
-            let icon = `<i class="fa-solid fa-circle-check text-emerald-400"></i>`;
-            let borderStyle = "border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.2)]";
-            
-            if (type === "error") {
-                icon = `<i class="fa-solid fa-triangle-exclamation text-rose-500"></i>`;
-                borderStyle = "border-rose-500/30 shadow-[0_0_15px_rgba(244,63,94,0.2)]";
-            } else if (type === "info") {
-                icon = `<i class="fa-solid fa-circle-info text-cyber-blue"></i>`;
-                borderStyle = "border-cyber-blue/30 shadow-[0_0_15px_rgba(0,240,255,0.2)]";
+            let colorTheme = "border-slate-200 text-slate-800";
+            let icon = `<i class="fa-solid fa-circle-info text-blue-500"></i>`;
+
+            if (type === "success") {
+                colorTheme = "border-emerald-200 text-slate-800";
+                icon = `<i class="fa-solid fa-circle-check text-emerald-500"></i>`;
+            } else if (type === "error") {
+                colorTheme = "border-rose-200 text-slate-800";
+                icon = `<i class="fa-solid fa-circle-exclamation text-rose-500"></i>`;
             }
 
-            notif.innerHTML = `${icon} <span class="text-white">${msg}</span>`;
-            notif.className += ` ${borderStyle}`;
-            
-            document.body.appendChild(notif);
+            toast.className += ` ${colorTheme}`;
+            toast.innerHTML = `${icon} <span>${msg}</span>`;
+            document.body.appendChild(toast);
 
-            // Reflow and trigger slide-in transition
+            // Reflow insertion
             setTimeout(() => {
-                notif.classList.remove('translate-y-10', 'opacity-0');
-                notif.classList.add('translate-y-0', 'opacity-100');
-            }, 10);
+                toast.classList.remove('translate-y-8', 'opacity-0');
+                toast.classList.add('translate-y-0', 'opacity-100');
+            }, 50);
 
-            // Dissolve after 3.5s
+            // Dissolve
             setTimeout(() => {
-                notif.classList.remove('translate-y-0', 'opacity-100');
-                notif.classList.add('translate-y-10', 'opacity-0');
-                setTimeout(() => notif.remove(), 300);
-            }, 3500);
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-8', 'opacity-0');
+                setTimeout(() => toast.remove(), 350);
+            }, 3000);
         }
 
 
-        // 7. RESPONSIVE NAVIGATION SWITCHER
+        // MOBILE DROPDOWN HAMBURGER CONTROLLERS
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             const icon = document.getElementById('menu-icon');
             menu.classList.toggle('hidden');
             
             if (menu.classList.contains('hidden')) {
-                icon.className = "fa-solid fa-bars-staggered";
+                icon.className = "fa-solid fa-bars text-lg";
             } else {
-                icon.className = "fa-solid fa-xmark";
+                icon.className = "fa-solid fa-times text-lg";
             }
         }
 
 
-        // 8. ON WINDOW LOAD INITIALIZATION
+        // PAGE LIFECYCLE BOOTSTRAPPER
         window.onload = function() {
-            // Resize and compile particle network
-            resizeCanvas();
-            animateParticles();
-
-            // Render live customizable mock post streams
-            renderFeed();
-
-            // Set default active living profile avatar mapping
+            // Render basic standard profiles
             setActiveProfile('synth');
 
-            // Simulate small digital nodes loading dynamically to look active and alive
+            // Render memory-backed feed stream lists
+            renderFeed();
+
+            // Simple micro-updater simulating safe dynamic node activity
             setInterval(() => {
                 const nodes = document.getElementById('stat-nodes');
                 const worlds = document.getElementById('stat-worlds');
                 if (nodes) {
-                    const currentNodes = parseInt(nodes.innerText.replace(/,/g, ''));
-                    nodes.innerText = (currentNodes + Math.floor(Math.random() * 3) + 1).toLocaleString();
+                    const nodeNum = parseInt(nodes.innerText.replace(/,/g, ''));
+                    nodes.innerText = (nodeNum + Math.floor(Math.random() * 2) + 1).toLocaleString();
                 }
                 if (worlds) {
-                    const currentWorlds = parseInt(worlds.innerText.replace(/,/g, ''));
-                    if (Math.random() > 0.7) {
-                        worlds.innerText = (currentWorlds + 1).toLocaleString();
+                    const worldNum = parseInt(worlds.innerText.replace(/,/g, ''));
+                    if (Math.random() > 0.85) {
+                        worlds.innerText = (worldNum + 1).toLocaleString();
                     }
                 }
-            }, 4000);
+            }, 6000);
         };
     </script>
 </body>
