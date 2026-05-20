@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Code Platform</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        
+        .code-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Customize scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f4f4f5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4d4d8;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a1a1aa;
+        }
+    </style>
+</head>
+<body class="bg-zinc-50 text-zinc-900 min-h-screen flex flex-col antialiased select-none">
+
+    <!-- HEADER BAR -->
+    <header class="bg-white border-b border-zinc-200 h-16 flex items-center justify-between px-6 shrink-0 z-10">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-zinc-950 flex items-center justify-center text-white">
+            <i data-lucide="terminal" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <span class="font-bold tracking-tight text-zinc-950">Vibe</span>
+            <span class="text-zinc-500 font-medium">Coder</span>
+          </div>
+          <div class="h-4 w-[1px] bg-zinc-200 mx-2"></div>
+          
+          <div class="flex items-center gap-2">
+            <input 
+              id="project-title-input"
+              type="text" 
+              value="Starter Project" 
+              class="text-sm font-semibold text-zinc-800 bg-transparent hover:bg-zinc-100 focus:bg-white focus:outline-none focus:ring-1 focus:ring-zinc-300 rounded px-2 py-1 w-64 transition-all"
+            />
+            <span id="save-status" class="text-xs text-zinc-400 flex items-center gap-1 ml-1">
+              <!-- Dynamically populated status -->
+            </span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <!-- Gemini API Key Input -->
+          <div class="flex items-center gap-2 bg-zinc-100 p-1.5 rounded-lg border border-zinc-200">
+            <i data-lucide="key" class="w-4 h-4 text-zinc-500 ml-1.5"></i>
+            <input 
+              id="api-key-input"
+              type="password" 
+              placeholder="Gemini API Key" 
+              class="bg-transparent text-xs w-48 focus:outline-none border-none text-zinc-700 font-mono"
+            />
+          </div>
+
+          <button 
+            id="save-btn"
+            class="flex items-center gap-2 bg-zinc-950 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-zinc-800 active:scale-95 transition-all"
+          >
+            <i data-lucide="save" class="w-4 h-4"></i>
+            Save
+          </button>
+        </div>
+    </header>
+
+    <!-- WORKSPACE AREA -->
+    <div class="flex-1 flex overflow-hidden">
+        
+        <!-- SIDEBAR -->
+        <aside class="w-72 bg-white border-r border-zinc-200 flex flex-col justify-between shrink-0 h-full">
+          <div class="p-4 flex flex-col flex-1 overflow-hidden">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-400">My Projects</h2>
+              <button 
+                id="new-project-btn"
+                class="text-xs bg-zinc-100 hover:bg-zinc-200 text-zinc-700 px-2.5 py-1 rounded-md flex items-center gap-1 transition-all"
+              >
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> New
+              </button>
+            </div>
+            
+            <!-- Project items container -->
+            <div id="projects-list" class="flex-1 overflow-y-auto space-y-1">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+
+          <div class="p-4 border-t border-zinc-200 bg-zinc-50 flex flex-col gap-2">
+            <div class="flex items-center gap-2 text-xs text-zinc-500">
+              <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+              <span>Vibe State: Active Preview</span>
+            </div>
+            <p class="text-[10px] text-zinc-400 font-mono">JS Vanilla SPA • Tailwind Integration</p>
+          </div>
+        </aside>
+
+        <!-- MAIN LAYOUT DIVISION -->
+        <main class="flex-1 flex flex-col lg:flex-row overflow-hidden bg-zinc-100">
+          
+          <!-- LEFT EDITOR SECTION -->
+          <section class="w-full lg:w-1/2 flex flex-col border-b lg:border-b-0 lg:border-r border-zinc-200 h-1/2 lg:h-full bg-white">
+            
+            <!-- Tabs -->
+            <div class="bg-white border-b border-zinc-200 px-4 h-12 flex items-center justify-between shrink-0">
+              <div class="flex gap-2">
+                <button 
+                  id="tab-prompt-btn"
+                  class="px-3 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-all bg-zinc-100 text-zinc-950"
+                >
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Vibe Prompt
+                </button>
+                <button 
+                  id="tab-editor-btn"
+                  class="px-3 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-all text-zinc-500 hover:text-zinc-800"
+                >
+                  <i data-lucide="code" class="w-3.5 h-3.5"></i> Raw Code
+                </button>
+              </div>
+              <span class="text-xs font-mono text-zinc-400">index.html</span>
+            </div>
+
+            <!-- TAB 1: AI Prompt Input Panel -->
+            <div id="panel-prompt" class="flex-1 flex flex-col p-6 overflow-y-auto">
+                <div class="mb-4">
+                  <h3 class="text-lg font-bold text-zinc-900">What design style are we vibing?</h3>
+                  <p class="text-xs text-zinc-500">Provide high-fidelity specifications. Gemini will convert your description into clean code structure.</p>
+                </div>
+
+                <textarea 
+                  id="prompt-input"
+                  placeholder="e.g. Build an executive portfolio site for a brand designer. Minimal dark theme, grid project displays, interactive filters, smooth accordion dropdowns, and micro-animations using custom JS trigger classes." 
+                  class="w-full flex-1 min-h-[160px] p-4 text-sm border border-zinc-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-zinc-300 bg-zinc-50/50 placeholder-zinc-450 resize-none mb-4 font-normal"
+                ></textarea>
+
+                <button 
+                  id="generate-btn"
+                  class="flex items-center justify-center gap-2 bg-zinc-950 text-white font-medium text-sm py-3 px-6 rounded-xl hover:bg-zinc-800 transition-all active:scale-98 shadow-sm"
+                >
+                  <i data-lucide="sparkles" class="w-4 h-4 text-zinc-300"></i>
+                  Generate & Compile View
+                </button>
+
+                <!-- Starter Templates -->
+                <div class="mt-8 border-t border-zinc-200 pt-5">
+                  <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-3 flex items-center gap-1">
+                    <i data-lucide="info" class="w-3.5 h-3.5"></i> Inspiration Starters
+                  </h4>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                    <button 
+                      data-prompt="Pomodoro productivity workspace featuring a beautiful circular progress SVG, clean dashboard stats, history log table, customized sound triggers, and light/dark mode switch."
+                      class="quick-prompt-btn text-left p-3 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-all"
+                    >
+                      <span class="font-bold text-zinc-800 block">🍅 Minimalist Timer</span>
+                      Stateful workflow with custom sound triggers.
+                    </button>
+                    <button 
+                      data-prompt="Build a beautiful crypto portfolio tracker web app dashboard. Present interactive canvas trends charts, latest price list feed, simulated buy/sell actions modal, and customizable alerts."
+                      class="quick-prompt-btn text-left p-3 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-all"
+                    >
+                      <span class="font-bold text-zinc-800 block">📊 Crypto Analytics</span>
+                      Live charts dashboard, alerts, transaction tables.
+                    </button>
+                    <button 
+                      data-prompt="Single-page interactive visual resume for a frontend developer. Elegant zinc styling, interactive timeline sliders, functional code sandbox emulator card, and responsive custom layout."
+                      class="quick-prompt-btn text-left p-3 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-all"
+                    >
+                      <span class="font-bold text-zinc-850 block">💼 Interactive Resume</span>
+                      Polished layout transitions, responsive columns.
+                    </button>
+                    <button 
+                      data-prompt="Stunning minimal weather dashboard. Clean ambient dynamic backdrops matching local time, search filters, details charts, and functional widget views."
+                      class="quick-prompt-btn text-left p-3 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-all"
+                    >
+                      <span class="font-bold text-zinc-850 block">☀️ Weather Dashboard</span>
+                      Elegant layouts with adaptive atmosphere UI.
+                    </button>
+                  </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: Raw Code Area Panel -->
+            <div id="panel-editor" class="hidden flex-1 flex flex-col overflow-hidden relative">
+                <div class="flex-1 flex overflow-hidden">
+                  <div 
+                    id="line-numbers"
+                    class="w-12 bg-zinc-900 text-zinc-600 select-none text-right pr-2.5 pt-4 font-mono text-xs leading-6 border-r border-zinc-800 flex flex-col overflow-hidden"
+                  >
+                    <!-- Populated programmatically -->
+                  </div>
+                  <textarea 
+                    id="code-editor"
+                    class="flex-1 p-4 bg-zinc-950 text-zinc-100 font-mono text-xs leading-6 resize-none focus:outline-none overflow-y-auto select-text selection:bg-zinc-700 selection:text-white"
+                    spellcheck="false"
+                  ></textarea>
+                </div>
+                <div class="bg-zinc-900 px-4 py-2 border-t border-zinc-800 flex items-center justify-between text-xs text-zinc-500 font-mono">
+                  <span>Lines: <span id="line-count-display">1</span></span>
+                  <span>UTF-8</span>
+                </div>
+            </div>
+
+          </section>
+
+          {/* PREVIEW CONTAINER SECTION */}
+          <section class="w-full lg:w-1/2 flex flex-col h-1/2 lg:h-full bg-zinc-100">
+            <div class="bg-white border-b border-zinc-200 px-4 h-12 flex items-center justify-between shrink-0">
+              <div class="flex items-center gap-1.5 text-zinc-700 text-xs font-semibold">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Live Sandbox Preview</span>
+              </div>
+              <div class="flex items-center gap-1">
+                <button 
+                  id="refresh-preview-btn"
+                  class="p-1.5 text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100 rounded-lg transition-all" 
+                  title="Reload Frame"
+                >
+                  <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                </button>
+                <button 
+                  id="external-preview-btn"
+                  class="p-1.5 text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100 rounded-lg transition-all" 
+                  title="Open Sandbox in New Tab"
+                >
+                  <i data-lucide="external-link" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="flex-1 p-4 bg-zinc-100 flex items-center justify-center">
+              <div class="w-full h-full bg-white rounded-xl shadow-sm border border-zinc-200 overflow-hidden relative flex flex-col">
+                <iframe 
+                  id="preview-iframe"
+                  title="Live Output Sandbox"
+                  class="w-full h-full border-none bg-white"
+                ></iframe>
+              </div>
+            </div>
+          </section>
+
+        </main>
+      </div>
+
+      <!-- LOADER SPLASH SCREEN OVERLAY -->
+      <div id="loader-overlay" class="fixed inset-0 bg-zinc-950/80 backdrop-blur-sm hidden flex-col items-center justify-center z-50 text-white select-none">
+        <div class="bg-zinc-900 border border-zinc-850 p-8 rounded-2xl max-w-sm text-center flex flex-col items-center shadow-2xl">
+          <div class="relative w-16 h-16 mb-4">
+            <div class="absolute inset-0 rounded-full border-4 border-zinc-800"></div>
+            <div class="absolute inset-0 rounded-full border-4 border-t-zinc-100 border-r-transparent animate-spin"></div>
+          </div>
+          <h3 class="text-base font-bold text-zinc-100 mb-1">Applying Vibe Code Base...</h3>
+          <p id="loader-subtitle" class="text-xs text-zinc-400 max-w-[260px] leading-relaxed">Processing...</p>
+        </div>
+      </div>
+
+      {/* ERROR MODAL */}
+      <div id="error-modal" class="fixed inset-0 bg-zinc-950/60 backdrop-blur-sm hidden flex-col items-center justify-center z-50 text-zinc-900 select-none">
+        <div class="bg-white border border-zinc-200 p-6 rounded-xl max-w-md w-full text-center flex flex-col items-center shadow-xl mx-4">
+          <div class="w-12 h-12 rounded-full bg-rose-50 flex items-center justify-center text-rose-500 mb-4">
+            <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-base font-bold text-zinc-900 mb-1">Execution Interrupted</h3>
+          <p id="error-msg-text" class="text-xs text-zinc-500 leading-relaxed mb-6"></p>
+          <button 
+            id="close-error-btn"
+            class="w-full bg-zinc-950 text-white font-medium text-sm py-2.5 rounded-lg hover:bg-zinc-800 transition-all active:scale-98"
+          >
+            Dismiss Notification
+          </button>
+        </div>
+      </div>
+
+      {/* CONFIRM DELETE MODAL */}
+      <div id="delete-modal" class="fixed inset-0 bg-zinc-950/50 backdrop-blur-sm hidden flex-col items-center justify-center z-50 text-zinc-950 select-none">
+        <div class="bg-white border border-zinc-200 p-6 rounded-xl max-w-sm w-full text-center flex flex-col items-center shadow-xl mx-4">
+          <div class="w-12 h-12 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-700 mb-4">
+            <i data-lucide="trash-2" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-base font-bold text-zinc-900 mb-1">Delete Project?</h3>
+          <p class="text-xs text-zinc-500 leading-relaxed mb-6">Are you sure you want to delete this design? This operation cannot be undone.</p>
+          <div class="flex gap-2 w-full">
+            <button 
+              id="cancel-delete-btn"
+              class="flex-1 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-medium text-xs py-2.5 rounded-lg transition-all"
+            >
+              Keep File
+            </button>
+            <button 
+              id="confirm-delete-btn"
+              class="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-medium text-xs py-2.5 rounded-lg transition-all"
+            >
+              Delete File
+            </button>
+          </div>
+        </div>
+      </div>
+
+    <script>
+      // DEFAULT STARTER HTML TEMPLATE
+      const DEFAULT_CODE = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Hello Vibe</title>
+</head>
+<body class="bg-zinc-50 flex items-center justify-center min-h-screen">
+    <div class="text-center p-8 bg-white rounded-xl shadow-sm border border-zinc-200 max-w-md">
+        <h1 class="text-2xl font-semibold text-zinc-950 mb-2">My New Web Project</h1>
+        <p class="text-zinc-500 mb-6">Generated automatically by the Vibe Coding Engine. Start describing your changes!</p>
+        <button onclick="changeBackground()" class="px-5 py-2.5 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors font-medium">
+            Interact With Me
+        </button>
+    </div>
+    <script>
+        function changeBackground() {
+            const colors = ['#fafafa', '#f4f4f5', '#e4e4e7', '#d4d4d8', '#ccfbf1', '#fef9c3', '#fee2e2'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            document.body.style.backgroundColor = randomColor;
+        }
+    </script>
+</body>
+</html>`;
+
+      // STATE CONFIGURATION
+      let projects = [];
+      let currentProject = null;
+      let activeTab = 'prompt'; // 'prompt' | 'editor'
+      let saveStatus = 'saved'; // 'saved' | 'saving' | 'unsaved'
+      let debounceTimeout = null;
+      let deleteTargetId = null;
+
+      // DOM ELEMENT REFS
+      const projectTitleInput = document.getElementById('project-title-input');
+      const saveStatusLabel = document.getElementById('save-status');
+      const apiKeyInput = document.getElementById('api-key-input');
+      const projectsListContainer = document.getElementById('projects-list');
+      const newProjectBtn = document.getElementById('new-project-btn');
+      const saveBtn = document.getElementById('save-btn');
+      
+      const tabPromptBtn = document.getElementById('tab-prompt-btn');
+      const tabEditorBtn = document.getElementById('tab-editor-btn');
+      const panelPrompt = document.getElementById('panel-prompt');
+      const panelEditor = document.getElementById('panel-editor');
+
+      const promptInput = document.getElementById('prompt-input');
+      const codeEditor = document.getElementById('code-editor');
+      const lineNumbersContainer = document.getElementById('line-numbers');
+      const lineCountDisplay = document.getElementById('line-count-display');
+      const generateBtn = document.getElementById('generate-btn');
+
+      const refreshPreviewBtn = document.getElementById('refresh-preview-btn');
+      const externalPreviewBtn = document.getElementById('external-preview-btn');
+      const previewIframe = document.getElementById('preview-iframe');
+
+      const loaderOverlay = document.getElementById('loader-overlay');
+      const loaderSubtitle = document.getElementById('loader-subtitle');
+      const errorModal = document.getElementById('error-modal');
+      const errorMsgText = document.getElementById('error-msg-text');
+      const closeErrorBtn = document.getElementById('close-error-btn');
+
+      const deleteModal = document.getElementById('delete-modal');
+      const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
+      const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+
+      // INITIALIZE
+      function init() {
+        lucide.createIcons();
+        
+        // Load API Key from local storage
+        const savedKey = localStorage.getItem('vibe_api_key') || '';
+        apiKeyInput.value = savedKey;
+
+        // Load Projects from storage
+        const savedProjects = localStorage.getItem('vibe_projects');
+        if (savedProjects) {
+          try {
+            projects = JSON.parse(savedProjects);
+          } catch(e) {
+            projects = [];
+          }
+        }
+
+        if (projects.length === 0) {
+          createFirstProject();
+        } else {
+          loadProject(projects[0]);
+        }
+
+        renderProjectsList();
+        setupEventListeners();
+      }
+
+      // EVENT BINDINGS
+      function setupEventListeners() {
+        // Project Utilities
+        newProjectBtn.addEventListener('click', createNewProject);
+        saveBtn.addEventListener('click', () => saveCurrentCode(true));
+        
+        projectTitleInput.addEventListener('input', (e) => {
+          updateCurrentProject({ title: e.target.value });
+          renderProjectsList();
+        });
+
+        apiKeyInput.addEventListener('input', (e) => {
+          localStorage.setItem('vibe_api_key', e.target.value.trim());
+        });
+
+        // Tab switches
+        tabPromptBtn.addEventListener('click', () => switchTab('prompt'));
+        tabEditorBtn.addEventListener('click', () => switchTab('editor'));
+
+        // Code Area Inputs
+        codeEditor.addEventListener('input', handleCodeChange);
+        codeEditor.addEventListener('scroll', syncLineNumbersScroll);
+
+        // Generate Action
+        generateBtn.addEventListener('click', handleGenerate);
+
+        // Sandbox Controls
+        refreshPreviewBtn.addEventListener('click', refreshPreview);
+        externalPreviewBtn.addEventListener('click', openSandboxWindow);
+
+        // Quick prompt click listeners
+        document.querySelectorAll('.quick-prompt-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            promptInput.value = btn.getAttribute('data-prompt');
+          });
+        });
+
+        // Modals
+        closeErrorBtn.addEventListener('click', () => hideModal(errorModal));
+        cancelDeleteBtn.addEventListener('click', () => hideModal(deleteModal));
+        confirmDeleteBtn.addEventListener('click', executeDeleteProject);
+      }
+
+      // STATE TO STORAGE COMMITS
+      function saveProjectsToLocalStorage() {
+        localStorage.setItem('vibe_projects', JSON.stringify(projects));
+      }
+
+      // PROJECT MANAGEMENT UTILS
+      function createFirstProject() {
+        const initialProject = {
+          id: 'default-project-id',
+          title: 'Starter Dashboard Project',
+          prompt: 'A starting template',
+          code: DEFAULT_CODE,
+          updated_at: new Date().toISOString()
+        };
+        projects = [initialProject];
+        saveProjectsToLocalStorage();
+        loadProject(initialProject);
+      }
+
+      function createNewProject() {
+        const newProj = {
+          id: 'proj-' + Date.now(),
+          title: 'New Vibe UI Project',
+          prompt: '',
+          code: DEFAULT_CODE,
+          updated_at: new Date().toISOString()
+        };
+        projects.unshift(newProj);
+        saveProjectsToLocalStorage();
+        loadProject(newProj);
+        renderProjectsList();
+      }
+
+      function loadProject(project) {
+        currentProject = project;
+        projectTitleInput.value = project.title;
+        codeEditor.value = project.code;
+        promptInput.value = project.prompt || '';
+        
+        updatePreview(project.code);
+        syncLineNumbers();
+        setSaveStatus('saved');
+      }
+
+      function updateCurrentProject(updatedFields) {
+        if (!currentProject) return;
+        
+        // Update model properties
+        Object.assign(currentProject, updatedFields, {
+          updated_at: new Date().toISOString()
+        });
+
+        // Re-order projects so most active stays on top
+        const index = projects.findIndex(p => p.id === currentProject.id);
+        if (index !== -1) {
+          projects.splice(index, 1);
+          projects.unshift(currentProject);
+        }
+
+        saveProjectsToLocalStorage();
+      }
+
+      function handleCodeChange() {
+        setSaveStatus('unsaved');
+        syncLineNumbers();
+
+        if (debounceTimeout) clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(() => {
+          saveCurrentCode();
+        }, 1000);
+      }
+
+      function saveCurrentCode(forceSync = false) {
+        const updatedCode = codeEditor.value;
+        updateCurrentProject({ code: updatedCode });
+        updatePreview(updatedCode);
+        setSaveStatus('saved');
+        if (forceSync) {
+          renderProjectsList();
+        }
+      }
+
+      function deleteProjectRequest(id, e) {
+        e.stopPropagation();
+        deleteTargetId = id;
+        showModal(deleteModal);
+      }
+
+      function executeDeleteProject() {
+        if (!deleteTargetId) return;
+        
+        projects = projects.filter(p => p.id !== deleteTargetId);
+        saveProjectsToLocalStorage();
+        hideModal(deleteModal);
+
+        if (currentProject && currentProject.id === deleteTargetId) {
+          if (projects.length > 0) {
+            loadProject(projects[0]);
+          } else {
+            createFirstProject();
+          }
+        }
+        deleteTargetId = null;
+        renderProjectsList();
+      }
+
+      // RENDER PROJECT LISTINGS
+      function renderProjectsList() {
+        projectsListContainer.innerHTML = '';
+        projects.forEach(project => {
+          const isSelected = currentProject && project.id === currentProject.id;
+          const date = new Date(project.updated_at).toLocaleDateString(undefined, {
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+
+          const item = document.createElement('div');
+          item.className = `group flex items-center justify-between p-3 rounded-lg cursor-pointer transition-all ${
+            isSelected ? 'bg-zinc-100' : 'hover:bg-zinc-50'
+          }`;
+
+          item.addEventListener('click', () => loadProject(project));
+
+          item.innerHTML = `
+            <div class="flex items-center gap-2.5 min-w-0 flex-1">
+              <i data-lucide="file-code" class="w-4 h-4 shrink-0 ${isSelected ? 'text-zinc-900' : 'text-zinc-400'}"></i>
+              <div class="min-w-0 flex-1">
+                <p class="text-xs font-semibold truncate ${isSelected ? 'text-zinc-950' : 'text-zinc-700'}">${escapeHtml(project.title)}</p>
+                <p class="text-[10px] text-zinc-400 mt-0.5 truncate">${date}</p>
+              </div>
+            </div>
+            <button class="delete-btn opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-zinc-200 text-zinc-450 hover:text-rose-600 transition-all">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+          `;
+
+          // Handle deletion trigger safely
+          item.querySelector('.delete-btn').addEventListener('click', (e) => {
+            deleteProjectRequest(project.id, e);
+          });
+
+          projectsListContainer.appendChild(item);
+        });
+        
+        lucide.createIcons();
+      }
+
+      // UI TAB SWAP LOGIC
+      function switchTab(target) {
+        activeTab = target;
+        if (target === 'prompt') {
+          tabPromptBtn.className = "px-3 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-all bg-zinc-100 text-zinc-950";
+          tabEditorBtn.className = "px-3 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-all text-zinc-500 hover:text-zinc-800";
+          panelPrompt.classList.remove('hidden');
+          panelEditor.classList.add('hidden');
+        } else {
+          tabEditorBtn.className = "px-3 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-all bg-zinc-100 text-zinc-955";
+          tabPromptBtn.className = "px-3 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-all text-zinc-500 hover:text-zinc-800";
+          panelEditor.classList.remove('hidden');
+          panelPrompt.classList.add('hidden');
+          syncLineNumbers();
+        }
+      }
+
+      // REAL-TIME LINE NUMBERS SYNC
+      function syncLineNumbers() {
+        const text = codeEditor.value;
+        const lines = text.split('\n');
+        const count = Math.max(lines.length, 1);
+        
+        lineCountDisplay.innerText = count;
+        
+        let htmlLines = '';
+        for (let i = 1; i <= count; i++) {
+          htmlLines += `<div>${i}</div>`;
+        }
+        lineNumbersContainer.innerHTML = htmlLines;
+        syncLineNumbersScroll();
+      }
+
+      function syncLineNumbersScroll() {
+        lineNumbersContainer.scrollTop = codeEditor.scrollTop;
+      }
+
+      // STATUS LABEL
+      function setSaveStatus(status) {
+        saveStatus = status;
+        if (status === 'saved') {
+          saveStatusLabel.innerHTML = `<i data-lucide="cloud" class="w-3.5 h-3.5 text-emerald-500"></i> Saved`;
+        } else {
+          saveStatusLabel.innerHTML = `<i data-lucide="cloud" class="w-3.5 h-3.5 text-amber-500 animate-pulse"></i> Saving...`;
+        }
+        lucide.createIcons();
+      }
+
+      // IFRAME PREVIEW INTEGRATION
+      function updatePreview(htmlContent) {
+        const doc = previewIframe.contentDocument || previewIframe.contentWindow.document;
+        doc.open();
+        doc.write(htmlContent);
+        doc.close();
+      }
+
+      function refreshPreview() {
+        updatePreview(codeEditor.value);
+      }
+
+      function openSandboxWindow() {
+        const sandbox = window.open();
+        if (sandbox) {
+          sandbox.document.write(codeEditor.value);
+          sandbox.document.close();
+        } else {
+          showError("Pop-up blocked. Please enable browser pop-ups to open full-tab sandbox.");
+        }
+      }
+
+      // MODALS TRANSITIONS
+      function showModal(el) {
+        el.classList.remove('hidden');
+        el.classList.add('flex');
+      }
+
+      function hideModal(el) {
+        el.classList.add('hidden');
+        el.classList.remove('flex');
+      }
+
+      function showLoader(text) {
+        loaderSubtitle.innerText = text;
+        showModal(loaderOverlay);
+      }
+
+      function hideLoader() {
+        hideModal(loaderOverlay);
+      }
+
+      function showError(msg) {
+        errorMsgText.innerText = msg;
+        showModal(errorModal);
+      }
+
+      // DYNAMIC GEMINI API WITH RETRY & EXPONENTIAL BACKOFF
+      async function callGeminiAPI(userPrompt) {
+        const apiKey = apiKeyInput.value.trim();
+        if (!apiKey) {
+          throw new Error("Gemini API Key is missing. Please enter your API Key in the settings bar above.");
+        }
+
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+        const systemPrompt = (
+          "You are an expert web development AI. Generate a fully responsive, visually beautiful, " +
+          "and complete single-file web application using standard HTML, inline CSS (or Tailwind CDN), " +
+          "and clean JavaScript. Do not write any markdown wrappers, explanations, introduction, or " +
+          "conclusions. You MUST return only the clean, executable code starting with <!DOCTYPE html> " +
+          "and ending with </html>."
+        );
+
+        const payload = {
+          contents: [{
+            parts: [{ text: userPrompt }]
+          }],
+          systemInstruction: {
+            parts: [{ text: systemPrompt }]
+          }
+        };
+
+        const retries = 5;
+        let delay = 1000;
+
+        for (let attempt = 0; attempt < retries; attempt++) {
+          try {
+            const response = await fetch(url, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+              const data = await response.json();
+              const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+              if (!rawText) {
+                throw new Error("Received empty content block from Gemini API.");
+              }
+
+              // Strip potential markdown enclosures
+              let cleaned = rawText.replace(/^```html\s*/i, "");
+              cleaned = cleaned.replace(/^```xml\s*/i, "");
+              cleaned = cleaned.replace(/^```\s*/i, "");
+              cleaned = cleaned.replace(/```$/, "");
+              return cleaned.trim();
+            } else if ([429, 500, 502, 503, 504].includes(response.status)) {
+              // Handle backoff and retry
+              await new Promise(resolve => setTimeout(resolve, delay));
+              delay *= 2;
+            } else {
+              const errDetails = await response.text();
+              throw new Error(`Gemini API error (Status ${response.status}): ${errDetails}`);
+            }
+          } catch (err) {
+            if (attempt === retries - 1) {
+              throw err;
+            }
+            await new Promise(resolve => setTimeout(resolve, delay));
+            delay *= 2;
+          }
+        }
+        throw new Error("Could not connect to the API after multiple connection retries.");
+      }
+
+      async function handleGenerate() {
+        const promptText = promptInput.value.trim();
+        if (!promptText) {
+          showError("Please describe what you want to build inside the prompt box first!");
+          return;
+        }
+
+        showLoader("Connecting to Gemini and rendering code layouts...");
+        try {
+          const generatedCode = await callGeminiAPI(promptText);
+          codeEditor.value = generatedCode;
+          updateCurrentProject({ code: generatedCode, prompt: promptText });
+          updatePreview(generatedCode);
+          setSaveStatus('saved');
+          renderProjectsList();
+
+          // Smooth slide shift to editor view so they see the result code
+          switchTab('editor');
+        } catch (err) {
+          showError(err.message || "An unexpected error occurred during build processes.");
+        } finally {
+          hideLoader();
+        }
+      }
+
+      // HELPER: HTML SPECIALCHARS ENCODER
+      function escapeHtml(text) {
+        if (!text) return "";
+        return text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      // INITIALIZE RUNTIME
+      window.onload = init;
+    </script>
+</body>
+</html>
